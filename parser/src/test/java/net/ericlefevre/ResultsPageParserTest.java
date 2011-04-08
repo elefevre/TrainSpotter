@@ -10,5 +10,9 @@ public class ResultsPageParserTest {
 
 		WebTester webTester = new WebTester();
 		webTester.beginAt(pathToSample + "/sample.html");
+
+		ResultsPageParser parser = new ResultsPageParser(pathToSample + "/sample.html");
+
+		//		assertThat(parser.getTrainNumber()).isEqualTo("7015");
 	}
 }
