@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.ericlefevre</groupId>
+	<artifactId>TrainParser</artifactId>
+	<packaging>pom</packaging>
+	<modules>
+		<module>parser</module>
+	</modules>
+
+	<name>Train Parser</name>
+	<version>0.1-SNAPSHOT</version>
+	<inceptionYear>2011</inceptionYear>
+	<organization>
+		<name>Eric Lefevre-Ardant</name>
+		<url>http://ericlefevre.net/</url>
+	</organization>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<optimize>true</optimize>
+					<source>1.6</source>
+					<target>1.6</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+					<additionalConfig>
+						<file>
+							<name>.settings/org.eclipse.jdt.core.prefs</name>
+							<location>${user.dir}/eclipse_settings/org.eclipse.jdt.core.prefs</location>
+						</file>
+						<file>
+							<name>.settings/org.eclipse.jdt.ui.prefs</name>
+							<location>${user.dir}/eclipse_settings/org.eclipse.jdt.ui.prefs</location>
+						</file>
+						<file>
+							<name>infinitest.filters</name>
+							<content>.*TestFunctional</content>
+						</file>
+					</additionalConfig>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>-server -Xms2G -Xmx2G -XX:MaxPermSize=1G ${infinitest.jvmparameter} -Djava.security.egd=file:/dev/./urandom</argLine>
+					<redirectTestOutputToFile>true</redirectTestOutputToFile>
+				</configuration>
+				<executions>
+					<execution>
+						<id>surefire-it</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<configuration>
+							<includes>
+								<include>**/*TestFunctional.java</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
