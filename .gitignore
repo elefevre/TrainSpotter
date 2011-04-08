@@ -1,0 +1,10 @@
+.metadata
+eclipse_settings
+.classpath
+.project
+.settings
+*.class
+*.swp
+*~
+target
+infinitest.filters
