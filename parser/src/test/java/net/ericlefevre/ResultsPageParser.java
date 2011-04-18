@@ -1,22 +1,27 @@
 package net.ericlefevre;
 
-import net.sourceforge.jwebunit.api.IElement;
-import net.sourceforge.jwebunit.junit.WebTester;
+import java.util.regex.*;
 
 public class ResultsPageParser {
-	private final WebTester webTester;
+	private final String content;
 
-	public ResultsPageParser(String url) {
-		webTester = new WebTester();
-		webTester.beginAt(url);
+	public ResultsPageParser(String content) {
+		this.content = content;
 	}
 
 	public String getTrainNumber() {
-		String str = "";
-		for (IElement element : webTester.getElementsByXPath("//html/body")) {
-			str += element.getName() + "; ";
-		}
-		return str;
-	}
+		Pattern pattern = Pattern.compile("Train N([0-9]*)<");
 
+		String[] splittedPage = content.split("\n");
+
+		String value = null;
+		for (String line : splittedPage) {
+			Matcher matcher = pattern.matcher(line);
+			if (matcher.find()) {
+				value = matcher.group(1);
+			}
+		}
+
+		return value;
+	}
 }
