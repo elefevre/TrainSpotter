@@ -24,4 +24,20 @@ public class ResultsPageParser {
 
 		return value;
 	}
+
+	public String getDepartureDate() {
+		Pattern pattern = Pattern.compile("\\(le (.*)\\)<");
+
+		String[] splittedPage = content.split("\n");
+
+		String value = null;
+		for (String line : splittedPage) {
+			Matcher matcher = pattern.matcher(line);
+			if (matcher.find()) {
+				value = matcher.group(1);
+			}
+		}
+
+		return value;
+	}
 }

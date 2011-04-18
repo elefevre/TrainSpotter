@@ -198,10 +198,13 @@ public class ResultsPageParserTest {
 			"</script> "; //
 
 	@Test
-	public void shouldReadTheHtmlResultsPage() {
-		ResultsPageParser parser = new ResultsPageParser(sample_08_04_2011);
+	public void shouldReadTheTrainNumber() {
+		assertThat(new ResultsPageParser(sample_08_04_2011).getTrainNumber()).isEqualTo("7015");
+	}
 
-		assertThat(parser.getTrainNumber()).isEqualTo("7015");
+	@Test
+	public void shouldReadTheDepartureDate() {
+		assertThat(new ResultsPageParser(sample_08_04_2011).getDepartureDate()).isEqualTo("08/04/2011");
 	}
 
 }
