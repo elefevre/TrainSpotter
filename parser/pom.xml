@@ -2,11 +2,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.ericlefevre</groupId>
-		<artifactId>TrainParser</artifactId>
+		<artifactId>trainspotter</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>Parser</artifactId>
-	<name>TrainParser</name>
+	<name>HTML Parser</name>
 	<packaging>jar</packaging>
 
 	<dependencies>
