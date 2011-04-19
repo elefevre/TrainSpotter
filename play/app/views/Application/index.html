@@ -1,4 +1,8 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
 
-#{welcome /}
+
+<form action="@{TrainSpotter.displayTrainDetails()}" method="GET">
+	<input type="text" name="trainNumber" />
+	<input type="submit" value="Give me details on this train number" />
+</form>

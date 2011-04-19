@@ -9,3 +9,4 @@ target
 infinitest.filters
 play/tmp
 play/eclipse
+play/test-result
