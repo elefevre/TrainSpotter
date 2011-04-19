@@ -5,8 +5,8 @@
 		<artifactId>trainspotter</artifactId>
 		<version>0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>web</artifactId>
-	<name>Web Server</name>
+	<artifactId>web-jetty</artifactId>
+	<name>Jetty Web Server</name>
 	<packaging>jar</packaging>
 
 	<build>

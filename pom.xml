@@ -6,7 +6,7 @@
 	<modules>
 		<module>parser</module>
 		<module>webapp</module>
-		<module>web</module>
+		<module>web-jetty</module>
 	</modules>
 
 	<name>Train Spotter</name>
