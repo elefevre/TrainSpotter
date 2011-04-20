@@ -1,6 +1,14 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
 
+The TrainSpotter app.
+<hr/>
+
+#{if flash.error}
+    <p style="color:#c00">
+        ${flash.error}
+    </p>
+#{/if}
 
 <form action="@{TrainSpotter.displayTrainDetails()}" method="GET">
 	<input type="text" name="trainNumber" />

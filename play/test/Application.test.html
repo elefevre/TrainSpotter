@@ -1,7 +1,29 @@
 *{ You can use plain selenium command using the selenium tag }*
 
 #{selenium}
-    // Open the home page, and check that no error occured
-    open('/')
-    assertNotTitle('Application error')
+	// Open the home page, and check that no error occured
+	open('/')
+	assertNotTitle('Application error')
+
+	// Check that it is the form
+	assertTextPresent('The TrainSpotter app.')
+
+	// Submit the form
+	clickAndWait('css=input[type=submit]')
+
+	// Check the error
+	assertTextPresent('Please enter the train number')
+
+	// Type the name and submit
+	type('css=input[type=text]', '7015')
+	clickAndWait('css=input[type=submit]')
+
+	// Check the result
+	assertTextPresent('Received train number 7015')
+
+	// Check the back link
+	clickAndWait('link=Back to form')
+
+	// Home page?
+	assertTextNotPresent('Received train number 7015')
 #{/selenium}
