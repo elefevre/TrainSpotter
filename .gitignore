@@ -10,3 +10,4 @@ infinitest.filters
 play/tmp
 play/eclipse
 play/test-result
+setenv.sh
