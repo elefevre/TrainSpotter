@@ -4,9 +4,10 @@ import static org.fest.assertions.Assertions.*;
 import org.junit.Test;
 
 public class ResultsPageParserTest {
-	// <!-- saved from url=(0080)http://www.infolignes.com/recherche.php?date_num_train=2011|04|08&num_train=7015 -->
+	// <!-- saved from url=(0080)http://www.infolignes.com/recherche.php?date_num_train=2011|04|20&num_train=7015 -->
 	private static final String sample_08_04_2011 = "\n"
-			+ //
+			+ "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\"> \n"
+			+ //                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 			"<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"fr\"> \n"
 			+ //
 			"    <head> \n"
@@ -25,13 +26,43 @@ public class ResultsPageParserTest {
 			+ //
 			"	    <!--[if IE 6]><link href=\"css/ie6.css\" rel=\"stylesheet\" type=\"text/css\" media=\"screen\" /><![endif]--> \n"
 			+ //
-			"		<!--[if IE 7]><link href=\"css/ie7.css\" rel=\"stylesheet\" type=\"text/css\" media=\"screen\" /><![endif]-->	\n"
+			"		<!--[if IE 7]><link href=\"css/ie7.css\" rel=\"stylesheet\" type=\"text/css\" media=\"screen\" /><![endif]--> \n"
+			+ //
+			"		<!--[if IE 8]><link href=\"css/ie8.css\" rel=\"stylesheet\" type=\"text/css\" media=\"screen\" /><![endif]-->		\n"
 			+ //
 			"		<script type=\"text/javascript\">function addBookmark(){var browserName = navigator.appName;var browserVer = parseInt(navigator.appVersion,10);if(browserName == 'Microsoft Internet Explorer' && browserVer >= 4){window.external.AddFavorite(\"http://www.infolignes.com/\",\"InfoLignes\");} else{window.sidebar.addPanel(\"InfoLignes\",\"http://www.infolignes.com/\",\"\");}}\n"
 			+ //
 			"function toggle_visibility(id){var e = document.getElementById(id);if(e.style.display == 'block'){e.style.display = 'none';}else{e.style.display = 'block';}}</script> \n"
 			+ //
-			"	</head> \n"
+			" \n"
+			+ //
+			"                    <script type=\"text/javascript\"> \n"
+			+ //
+			" \n"
+			+ //
+			"              var _gaq = _gaq || [];\n"
+			+ //
+			"              _gaq.push(['_setAccount', 'UA-22677850-1']);\n"
+			+ //
+			"              _gaq.push(['_trackPageview']);\n"
+			+ //
+			" \n"
+			+ //
+			"              (function() {\n"
+			+ //
+			"                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;\n"
+			+ //
+			"                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';\n"
+			+ //
+			"                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);\n"
+			+ //
+			"              })();\n"
+			+ //
+			" \n"
+			+ //
+			"            </script> \n"
+			+ //
+			"        	</head> \n"
 			+ //
 			" \n"
 			+ //
@@ -54,7 +85,7 @@ public class ResultsPageParserTest {
 			"	      <div class=\"gutter\"> \n" + //
 			"	      \n" + //
 			"	        <div id=\"demande\"> \n" + //
-			"  	        <h2><span>Train N7015<img title=\"TGV\" alt=\"TGV\" src=\"/images/bandeau-train/logo-tgv.jpg\"/></span></h2> \n" + //
+			"  	        <h2><span>Train N°7015<img title=\"TGV\" alt=\"TGV\" src=\"/images/bandeau-train/logo-tgv.jpg\"/></span></h2> \n" + //
 			"  	        <p class=\"help\"><a href=\"aide.php\">Aide</a></p> \n" + //
 			"  	        <div class=\"block group\"> \n" + //
 			"    	        <ul> \n" + //
@@ -62,7 +93,7 @@ public class ResultsPageParserTest {
 			"    	          <li>Gare d'arrivée : <strong>  Lille Flandres</strong></li> \n" + //
 			"    	        </ul> \n" + //
 			"    	        <ul> \n" + //
-			"    	          <li>Heure de départ théorique : <strong>08h28</strong> &nbsp;<span style=\"font-size: 0.8em\" >(le 08/04/2011)</span></li> \n" + //
+			"    	          <li>Heure de départ théorique : <strong>08h28</strong> &nbsp;<span style=\"font-size: 0.8em\" >(le 20/04/2011)</span></li> \n" + //
 			"    	          <li>Heure d'arrivée théorique : <strong>09h30</strong></li> \n" + //
 			"    	        </ul> \n" + //
 			"    	      </div> \n" + //
@@ -89,7 +120,6 @@ public class ResultsPageParserTest {
 			"                                	                                	                                    dep.&nbsp;08h28\n" + //
 			"	                                                               	                            </td> \n" + //
 			"                            <td class=\"center\"> \n" + //
-			"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\"> \n" + //
 			"                            	                            	                                A l'heure\n" + //
 			"	                            	                                                                                                                                            </td> \n" + //
 			"                        </tr> \n" + //
@@ -107,7 +137,8 @@ public class ResultsPageParserTest {
 			"  	        </div> \n" + //
 			"  	      </div> \n" + //
 			"  	      \n" + //
-			"  	             	      		      </div> \n" + //
+			"            \n" + //
+			"      	      		      </div> \n" + //
 			"	    </div> \n" + //
 			"         \n" + //
 			"</div> \n" + //
@@ -138,7 +169,8 @@ public class ResultsPageParserTest {
 			"    </p> \n" + //
 			"  </div> \n" + //
 			"</div>    \n" + //
-			"<script type=\"text/javascript\"> \n" + //
+			"</body> \n" + //
+			"</html><script type=\"text/javascript\"> \n" + //
 			"$(function() {\n" + //
 			"	$('#form_search').submit(function() {\n" + //
 			"		$('#divErrorSearch').hide();\n" + //
@@ -195,7 +227,7 @@ public class ResultsPageParserTest {
 			"    buildAutocomplete('station', '/class/Ajax.php?method=firstLetterStation', 'stationCode');\n" + //
 			"    \n" + //
 			"    });\n" + //
-			"</script> "; //
+			"</script> ";
 
 	@Test
 	public void shouldReadTheTrainNumber() {
@@ -204,7 +236,7 @@ public class ResultsPageParserTest {
 
 	@Test
 	public void shouldReadTheDepartureDate() {
-		assertThat(new ResultsPageParser(sample_08_04_2011).getDepartureDate()).isEqualTo("08/04/2011");
+		assertThat(new ResultsPageParser(sample_08_04_2011).getDepartureDate()).isEqualTo("20/04/2011");
 	}
 
 }

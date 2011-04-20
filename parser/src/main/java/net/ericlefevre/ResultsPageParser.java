@@ -10,7 +10,7 @@ public class ResultsPageParser {
 	}
 
 	public String getTrainNumber() {
-		Pattern pattern = Pattern.compile("Train N([0-9]*)<");
+		Pattern pattern = Pattern.compile("Train \\D*([0-9]*)<");
 
 		String[] splittedPage = content.split("\n");
 
