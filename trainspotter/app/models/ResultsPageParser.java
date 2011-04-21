@@ -11,23 +11,15 @@ public class ResultsPageParser {
 	}
 
 	public String getTrainNumber() {
-		Pattern pattern = Pattern.compile("Train \\D*([0-9]*)<");
-
-		String[] splittedPage = content.split("\n");
-
-		String value = null;
-		for (String line : splittedPage) {
-			Matcher matcher = pattern.matcher(line);
-			if (matcher.find()) {
-				value = matcher.group(1);
-			}
-		}
-
-		return value;
+		return extract("Train \\D*([0-9]*)<");
 	}
 
 	public String getDepartureDate() {
-		Pattern pattern = Pattern.compile("\\(le (.*)\\)<");
+		return extract("\\(le (.*)\\)<");
+	}
+
+	private String extract(String regex) {
+		Pattern pattern = Pattern.compile(regex);
 
 		String[] splittedPage = content.split("\n");
 
@@ -38,8 +30,11 @@ public class ResultsPageParser {
 				value = matcher.group(1);
 			}
 		}
-
 		return value;
+	}
+
+	public String getContent() {
+		return content;
 	}
 
 	@Override
