@@ -12,4 +12,5 @@ play/eclipse
 play/test-result
 play/lib
 play/precompiled
+play/logs
 setenv.sh
