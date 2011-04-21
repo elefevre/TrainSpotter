@@ -18,24 +18,24 @@ git log -n 1 | grep -q -c "wip" && git reset HEAD~1
 
 rm -Rf ../privatebuild_trainspotter
 git clone -slb "${BRANCH}" . ../privatebuild_trainspotter
-cd ../privatebuild_trainspotter/play
+cd ../privatebuild_trainspotter/trainspotter
 
 play mvn:refresh
 play auto-test 
-BUILD_RESULT=$?
 
 if [ "$1" == "no-push" ]; then
 	echo "Not publishing, as per the no-push option"; exit 0
 fi
 
-if [ $BUILD_RESULT -ne 0 ]; then
+if [ -f test-result/result.passed ]; then
+	git push $ORIGIN $BRANCH
+	if [ $? -ne 0 ]; then
+		echo "Unable to push"
+	else
+		echo "Yet another successful push!"
+	fi
+else
 	echo "Unable to build"
 fi
 
-#git push $ORIGIN $BRANCH
-if [ $? -ne 0 ]; then
-	echo "Unable to push"
-fi
-
 cd ${PROJECT_DIR} && git fetch
-echo "Yet another successful push!"

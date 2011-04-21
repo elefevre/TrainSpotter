@@ -7,10 +7,10 @@
 *~
 target
 infinitest.filters
-play/tmp
-play/eclipse
-play/test-result
-play/lib
-play/precompiled
-play/logs
+trainspotter/tmp
+trainspotter/eclipse
+trainspotter/test-result
+trainspotter/lib
+trainspotter/precompiled
+trainspotter/logs
 setenv.sh
