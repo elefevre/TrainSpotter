@@ -10,7 +10,7 @@ public class StatusPageRetriever {
 		this.urlConnectionProvider = urlConnectionProvider;
 	}
 
-	public String downloadStatusPageForTrain(String trainNumber, int year, int month, int day) throws MalformedURLException, IOException {
+	public ResultsPageParser downloadStatusPageForTrain(String trainNumber, int year, int month, int day) throws MalformedURLException, IOException {
 		String inputLine;
 		String result = "";
 
@@ -18,7 +18,7 @@ public class StatusPageRetriever {
 		while ((inputLine = inputStreamForUrl.readLine()) != null) {
 			result += inputLine + "\n";
 		}
-		return result;
+		return new ResultsPageParser(result);
 	}
 
 	private String createUrl(String trainNumber, int year, int month, int day) {

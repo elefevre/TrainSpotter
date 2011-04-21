@@ -1,7 +1,4 @@
 
-
-
-import static org.fest.assertions.Assertions.*;
 import models.ResultsPageParser;
 import org.fest.assertions.Assertions;
 import org.junit.Test;
