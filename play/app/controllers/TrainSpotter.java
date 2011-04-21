@@ -6,9 +6,9 @@ import play.mvc.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.*;
-import net.ericlefevre.ResultsPageParser;
-import net.ericlefevre.StatusPageRetriever;
-import net.ericlefevre.URLConnectionProvider;
+import models.ResultsPageParser;
+import models.StatusPageRetriever;
+import models.URLConnectionProvider;
 import org.joda.time.DateTime;
 
 public class TrainSpotter extends Controller {

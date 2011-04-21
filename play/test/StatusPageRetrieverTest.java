@@ -1,12 +1,16 @@
-package net.ericlefevre;
+
 
 import static org.fest.assertions.Assertions.*;
 import static org.mockito.Mockito.*;
 import java.io.*;
 import java.net.MalformedURLException;
+import models.StatusPageRetriever;
+import models.URLConnectionProvider;
+import org.fest.assertions.Assertions;
 import org.junit.Test;
+import play.test.UnitTest;
 
-public class StatusPageRetrieverTest {
+public class StatusPageRetrieverTest extends UnitTest {
 	@Test
 	public void shouldObtainTheStatusPageForAGivenTrainAndDay() throws MalformedURLException, IOException {
 		URLConnectionProvider urlConnectionProvider = mock(URLConnectionProvider.class);
@@ -16,6 +20,6 @@ public class StatusPageRetrieverTest {
 
 		String results = new StatusPageRetriever(urlConnectionProvider).downloadStatusPageForTrain("7015", 2011, 4, 8);
 
-		assertThat(results).isEqualTo("line1\nline2\n");
+		Assertions.assertThat(results).isEqualTo("line1\nline2\n");
 	}
 }

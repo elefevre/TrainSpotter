@@ -1,9 +1,13 @@
-package net.ericlefevre;
+
+
 
 import static org.fest.assertions.Assertions.*;
+import models.ResultsPageParser;
+import org.fest.assertions.Assertions;
 import org.junit.Test;
+import play.test.UnitTest;
 
-public class ResultsPageParserTest {
+public class ResultsPageParserTest extends UnitTest {
 	// <!-- saved from url=(0080)http://www.infolignes.com/recherche.php?date_num_train=2011|04|20&num_train=7015 -->
 	private static final String sample_08_04_2011 = "\n"
 			+ "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\"> \n"
@@ -231,12 +235,12 @@ public class ResultsPageParserTest {
 
 	@Test
 	public void shouldReadTheTrainNumber() {
-		assertThat(new ResultsPageParser(sample_08_04_2011).getTrainNumber()).isEqualTo("7015");
+		Assertions.assertThat(new ResultsPageParser(sample_08_04_2011).getTrainNumber()).isEqualTo("7015");
 	}
 
 	@Test
 	public void shouldReadTheDepartureDate() {
-		assertThat(new ResultsPageParser(sample_08_04_2011).getDepartureDate()).isEqualTo("20/04/2011");
+		Assertions.assertThat(new ResultsPageParser(sample_08_04_2011).getDepartureDate()).isEqualTo("20/04/2011");
 	}
 
 }
