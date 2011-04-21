@@ -20,8 +20,8 @@ rm -Rf ../privatebuild_trainspotter
 git clone -slb "${BRANCH}" . ../privatebuild_trainspotter
 cd ../privatebuild_trainspotter/trainspotter
 
-play mvn:refresh
-play auto-test 
+play dependencies --sync
+play auto-test
 
 if [ "$1" == "no-push" ]; then
 	echo "Not publishing, as per the no-push option"; exit 0
