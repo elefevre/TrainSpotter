@@ -2,3 +2,9 @@
 
 require:
     - play
+    - com.google.guava -> guava r08
+    - joda-time -> joda-time 1.6.2
+    - commons-io -> commons-io 2.0.1
+    - commons-lang -> commons-lang 2.6
+    - org.mockito -> mockito-core 1.8.5
+    - org.easytesting -> fest-assert 1.4
