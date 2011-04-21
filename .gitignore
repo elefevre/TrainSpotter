@@ -11,4 +11,5 @@ play/tmp
 play/eclipse
 play/test-result
 play/lib
+play/precompiled
 setenv.sh
