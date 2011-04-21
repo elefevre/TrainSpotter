@@ -18,9 +18,10 @@ git log -n 1 | grep -q -c "wip" && git reset HEAD~1
 
 rm -Rf ../privatebuild_trainspotter
 git clone -slb "${BRANCH}" . ../privatebuild_trainspotter
-cd ../privatebuild_trainspotter
+cd ../privatebuild_trainspotter/play
 
-mvn verify
+play mvn:refresh
+play auto-test 
 BUILD_RESULT=$?
 
 if [ "$1" == "no-push" ]; then
@@ -31,7 +32,7 @@ if [ $BUILD_RESULT -ne 0 ]; then
 	echo "Unable to build"
 fi
 
-git push $ORIGIN $BRANCH
+#git push $ORIGIN $BRANCH
 if [ $? -ne 0 ]; then
 	echo "Unable to push"
 fi
