@@ -1,6 +1,15 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
- 
-<h1>Received train number ${trainNumber ?: 'unknown'}</h1>
- 
+
+<h1>Received train number ${results.trainNumber ?: 'unknown'}</h1>
+<h2>Departure date is ${results.departureDate ?: 'unknown'}</h1>
+
 <a href="@{Application.index()}">Back to form</a>
+
+<hr/>
+
+Page content is:
+
+<pre>
+${pageContent}
+</pre>
