@@ -5,12 +5,14 @@ import java.net.MalformedURLException;
 
 public class StatusPageRetriever {
 	private final URLConnectionProvider urlConnectionProvider;
+	private final ResultsPageParser resultsPageParser;
 
-	public StatusPageRetriever(URLConnectionProvider urlConnectionProvider) {
+	public StatusPageRetriever(URLConnectionProvider urlConnectionProvider, ResultsPageParser resultsPageParser) {
 		this.urlConnectionProvider = urlConnectionProvider;
+		this.resultsPageParser = resultsPageParser;
 	}
 
-	public ResultsPageParser downloadStatusPageForTrain(String trainNumber, int year, int month, int day) throws MalformedURLException, IOException {
+	public TrainInformationPage downloadStatusPageForTrain(String trainNumber, int year, int month, int day) throws MalformedURLException, IOException {
 		String inputLine;
 		String result = "";
 
@@ -18,7 +20,7 @@ public class StatusPageRetriever {
 		while ((inputLine = inputStreamForUrl.readLine()) != null) {
 			result += inputLine + "\n";
 		}
-		return new ResultsPageParser(result);
+		return resultsPageParser.toTrainInformationPage(result);
 	}
 
 	private String createUrl(String trainNumber, int year, int month, int day) {

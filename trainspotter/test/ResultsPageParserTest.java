@@ -231,17 +231,17 @@ public class ResultsPageParserTest extends UnitTest {
 
 	@Test
 	public void shouldReadTheTrainNumber() {
-		Assertions.assertThat(new ResultsPageParser(sample_08_04_2011).getTrainNumber()).isEqualTo("7015");
+		Assertions.assertThat(new ResultsPageParser().toTrainInformationPage(sample_08_04_2011).getTrainNumber()).isEqualTo("7015");
 	}
 
 	@Test
 	public void shouldReadTheDepartureDate() {
-		Assertions.assertThat(new ResultsPageParser(sample_08_04_2011).getDepartureDate()).isEqualTo("20/04/2011");
+		Assertions.assertThat(new ResultsPageParser().toTrainInformationPage(sample_08_04_2011).getTheoreticalDepartureDay()).isEqualTo("20/04/2011");
 	}
 
 	@Test
 	public void shouldReadStatusAtEachTrainStation() {
-		Assertions.assertThat(new ResultsPageParser(sample_08_04_2011).getStationDetails()).containsSequence(//
+		Assertions.assertThat(new ResultsPageParser().toTrainInformationPage(sample_08_04_2011).getTrainStationStatus()).containsSequence(//
 				new TrainStationStatus("Paris-Nord", "dep. 08h28", "A l'heure"),//
 				new TrainStationStatus("Lille Flandres", "arr. 09h30", "A l'heure"));
 	}

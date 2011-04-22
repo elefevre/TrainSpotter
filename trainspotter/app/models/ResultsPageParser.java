@@ -6,17 +6,15 @@ import java.util.*;
 import java.util.regex.*;
 import net.htmlparser.jericho.*;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.*;
 import com.google.common.collect.*;
 
 public class ResultsPageParser {
-	private final String content;
 
-	public ResultsPageParser(String content) {
-		this.content = content;
+	public TrainInformationPage toTrainInformationPage(String content) {
+		return new TrainInformationPage(getTrainNumber(content), getDepartureDate(content), getStationDetails(content));
 	}
 
-	public String getTrainNumber() {
+	private String getTrainNumber(String content) {
 		Source source = new Source(content);
 		Element firstH2 = Iterables.getFirst(source.getAllElements(H2), null);
 		Segment contentOfH2 = firstH2.getChildElements().get(0).getContent();
@@ -24,11 +22,11 @@ public class ResultsPageParser {
 		return StringUtils.substringBetween(contentOfH2.toString(), "Train N°", "<");
 	}
 
-	public String getDepartureDate() {
-		return extract("\\(le (.*)\\)<");
+	private String getDepartureDate(String content) {
+		return extract("\\(le (.*)\\)<", content);
 	}
 
-	private String extract(String regex) {
+	private String extract(String regex, String content) {
 		Pattern pattern = Pattern.compile(regex);
 
 		String[] splittedPage = content.split("\n");
@@ -43,11 +41,7 @@ public class ResultsPageParser {
 		return value;
 	}
 
-	public String getContent() {
-		return content;
-	}
-
-	public List<TrainStationStatus> getStationDetails() {
+	private List<TrainStationStatus> getStationDetails(String content) {
 		Source source = new Source(content);
 		Iterator<Element> tr = source.getAllElements(TR).iterator();
 		tr.next(); // column titles
@@ -69,21 +63,6 @@ public class ResultsPageParser {
 	private static String asString(Segment segment) {
 		String text = trimToEmpty(segment.toString());
 		return StringUtils.replaceEach(text, new String[] { "&nbsp;" }, new String[] { " " });
-	}
-
-	@Override
-	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this);
-	}
-
-	@Override
-	public boolean equals(Object arg0) {
-		return EqualsBuilder.reflectionEquals(this, arg0);
-	}
-
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

@@ -17,12 +17,12 @@ public class TrainSpotter extends Controller {
 
 		DateTime today = new DateTime();
 
-		ResultsPageParser results = getStatusPageRetriever().downloadStatusPageForTrain(trainNumber, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth());
+		TrainInformationPage results = getStatusPageRetriever().downloadStatusPageForTrain(trainNumber, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth());
 
 		render(results);
 	}
 
 	private static StatusPageRetriever getStatusPageRetriever() {
-		return new StatusPageRetriever(new URLConnectionProvider());
+		return new StatusPageRetriever(new URLConnectionProvider(), new ResultsPageParser());
 	}
 }
