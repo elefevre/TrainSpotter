@@ -1,11 +1,16 @@
 package models;
 
 import java.util.List;
+import javax.persistence.*;
+import org.apache.commons.lang.builder.*;
+import play.db.jpa.Model;
 
-public class TrainInformationPage {
-	private final String trainNumber;
-	private final String theoreticalDepartureDay;
-	private final List<TrainStationStatus> trainStationStatus;
+@Entity
+public class TrainInformationPage extends Model {
+	public String trainNumber;
+	public String theoreticalDepartureDay;
+	@OneToMany
+	public List<TrainStationStatus> trainStationStatus;
 
 	public TrainInformationPage(String trainNumber, String theoreticalDepartureDay, List<TrainStationStatus> trainStationStatus) {
 		this.trainNumber = trainNumber;
@@ -13,15 +18,18 @@ public class TrainInformationPage {
 		this.trainStationStatus = trainStationStatus;
 	}
 
-	public String getTrainNumber() {
-		return trainNumber;
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
 	}
 
-	public String getTheoreticalDepartureDay() {
-		return theoreticalDepartureDay;
+	@Override
+	public boolean equals(Object arg0) {
+		return EqualsBuilder.reflectionEquals(this, arg0);
 	}
 
-	public List<TrainStationStatus> getTrainStationStatus() {
-		return trainStationStatus;
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 }

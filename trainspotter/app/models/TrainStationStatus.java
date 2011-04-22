@@ -1,28 +1,19 @@
 package models;
 
+import javax.persistence.Entity;
 import org.apache.commons.lang.builder.*;
+import play.db.jpa.Model;
 
-public class TrainStationStatus {
-	private final String trainStation;
-	private final String time;
-	private final String informations;
+@Entity
+public class TrainStationStatus extends Model {
+	public String trainStation;
+	public String time;
+	public String informations;
 
 	public TrainStationStatus(String trainStation, String time, String informations) {
 		this.trainStation = trainStation;
 		this.time = time;
 		this.informations = informations;
-	}
-
-	public String getInformations() {
-		return informations;
-	}
-
-	public String getTime() {
-		return time;
-	}
-
-	public String getTrainStation() {
-		return trainStation;
 	}
 
 	@Override
