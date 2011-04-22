@@ -13,4 +13,5 @@ trainspotter/test-result
 trainspotter/lib
 trainspotter/precompiled
 trainspotter/logs
+trainspotter-prod*
 setenv.sh
