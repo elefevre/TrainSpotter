@@ -4,12 +4,20 @@
 <h1>Received train number ${results.trainNumber ?: 'unknown'}</h1>
 <h2>Departure date is ${results.departureDate ?: 'unknown'}</h1>
 
-<a href="@{Application.index()}">Back to form</a>
+<table>
+	<thead>
+		<td>Gare</td>
+		<td>Heure init. prévue</td>
+		<td>Détails</td>
+	</thead>
+	#{list items:results.stationDetails, as:'details'}
+		<tr>
+			<td>${details.trainStation}</td>
+			<td>${details.time}</td>
+			<td>${details.informations}</td>
+		</tr>
+	#{/list}
+</table>
 
 <hr/>
-
-Page content is:
-
-<pre>
-${results.content}
-</pre>
+<a href="@{Application.index()}">Back to form</a>
