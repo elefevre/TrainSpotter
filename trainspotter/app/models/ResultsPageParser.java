@@ -1,7 +1,12 @@
 package models;
 
+import static net.htmlparser.jericho.HTMLElementName.*;
+import java.util.List;
 import java.util.regex.*;
+import net.htmlparser.jericho.*;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.*;
+import com.google.common.collect.Iterables;
 
 public class ResultsPageParser {
 	private final String content;
@@ -11,7 +16,11 @@ public class ResultsPageParser {
 	}
 
 	public String getTrainNumber() {
-		return extract("Train \\D*([0-9]*)<");
+		Source source = new Source(content);
+		Element firstH2 = Iterables.getFirst(source.getAllElements(H2), null);
+		Segment contentOfH2 = firstH2.getChildElements().get(0).getContent();
+
+		return StringUtils.substringBetween(contentOfH2.toString(), "Train N°", "<");
 	}
 
 	public String getDepartureDate() {
@@ -50,5 +59,9 @@ public class ResultsPageParser {
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
+	}
+
+	public List<TrainStationStatus> getStationDetails() {
+		return null;
 	}
 }
