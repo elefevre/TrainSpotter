@@ -1,5 +1,4 @@
-
-import models.ResultsPageParser;
+import models.*;
 import org.fest.assertions.Assertions;
 import org.junit.Test;
 import play.test.UnitTest;
@@ -240,4 +239,10 @@ public class ResultsPageParserTest extends UnitTest {
 		Assertions.assertThat(new ResultsPageParser(sample_08_04_2011).getDepartureDate()).isEqualTo("20/04/2011");
 	}
 
+	@Test
+	public void shouldReadStatusAtEachTrainStation() {
+		Assertions.assertThat(new ResultsPageParser(sample_08_04_2011).getStationDetails()).containsSequence(//
+				new TrainStationStatus("Paris-Nord", "dep. 08h28", "A l'heure"),//
+				new TrainStationStatus("Lille Flandres", "arr. 09h30", "A l'heure"));
+	}
 }
