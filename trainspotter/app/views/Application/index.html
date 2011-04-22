@@ -14,3 +14,8 @@ The TrainSpotter app.
 	<input type="text" name="trainNumber" value="7015" />
 	<input type="submit" value="Give me details on this train number" />
 </form>
+
+<form action="@{TrainSpotter.sendEmail()}" method="GET">
+	<input type="text" name="title" value="Hello world" />
+	<input type="submit" value="Send email" />
+</form>
