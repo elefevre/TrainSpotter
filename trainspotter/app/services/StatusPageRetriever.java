@@ -1,7 +1,9 @@
-package models;
+package services;
 
 import java.io.*;
 import java.net.MalformedURLException;
+
+import models.TrainInformationPage;
 
 public class StatusPageRetriever {
 	private final URLConnectionProvider urlConnectionProvider;

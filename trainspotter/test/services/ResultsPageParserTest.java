@@ -1,7 +1,10 @@
+package services;
 import models.*;
 import org.fest.assertions.Assertions;
 import org.junit.Test;
+
 import play.test.UnitTest;
+import services.ResultsPageParser;
 
 public class ResultsPageParserTest extends UnitTest {
 	// <!-- saved from url=(0080)http://www.infolignes.com/recherche.php?date_num_train=2011|04|20&num_train=7015 -->

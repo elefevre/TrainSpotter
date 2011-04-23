@@ -1,9 +1,12 @@
-package models;
+package services;
 
 import static net.htmlparser.jericho.HTMLElementName.*;
 import static org.apache.commons.lang.StringUtils.*;
 import java.util.*;
 import java.util.regex.*;
+
+import models.TrainInformationPage;
+import models.TrainStationStatus;
 import net.htmlparser.jericho.*;
 import org.apache.commons.lang.StringUtils;
 import com.google.common.collect.*;
