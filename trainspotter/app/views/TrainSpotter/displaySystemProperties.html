@@ -1,0 +1,18 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+<table>
+	<thead>
+		<td>Key</td>
+		<td>Value</td>
+	</thead>
+	#{list items:properties, as:'property'}
+		<tr>
+			<td>${property.key}</td>
+			<td>${property.value}</td>
+		</tr>
+	#{/list}
+</table>
+
+<hr/>
+<a href="@{Application.index()}">Back to form</a>

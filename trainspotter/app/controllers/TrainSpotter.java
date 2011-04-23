@@ -3,7 +3,10 @@ package controllers;
 import static play.data.validation.Validation.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Set;
+
 import javax.mail.*;
 import javax.mail.Message;
 import javax.mail.internet.*;
@@ -34,13 +37,21 @@ public class TrainSpotter extends Controller {
 		render(results);
 	}
 
-	public static void sendEmail() {
+	public static void displaySystemProperties() {
+		Set<Entry<Object,Object>> properties = System.getProperties().entrySet();
+
+		render(properties);
+	}
+
+	public static void sendEmail(String title) {
 		/*
 		 * Important: Be sure to fill in your AWS access credentials in the
 		 * AwsCredentials.properties file before you try to run this sample.
 		 * http://aws.amazon.com/security-credentials
 		 */
-		BasicAWSCredentials credentials = new BasicAWSCredentials("", "");
+		String accessKey = "";
+		String secretKey = "";
+		BasicAWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
 
 		/*
 		 * SES requires that the sender and receiver of each message be verified
