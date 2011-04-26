@@ -13,8 +13,6 @@ import services.*;
 
 public class TrainSpotter extends Controller {
 	private static final String TO = "ericlef@gmail.com";
-	private static final String FROM = "ericlef@gmail.com";
-	private static final String BODY = "Hello World!";
 
 	public static void displayTrainDetails(@Required String trainNumber) throws MalformedURLException, IOException {
 		if (hasErrors()) {
@@ -25,7 +23,7 @@ public class TrainSpotter extends Controller {
 		DateTime today = new DateTime();
 
 		TrainInformationPage results = getStatusPageRetriever().downloadStatusPageForTrain(trainNumber, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth());
-		getEmailSender().sendEmail(TO, "Train " + trainNumber + " status", BODY, FROM);
+		getTrainStatusNotifier().notify(TO, trainNumber, results);
 
 		render(results);
 	}
@@ -34,6 +32,10 @@ public class TrainSpotter extends Controller {
 		Set<Entry<Object, Object>> properties = System.getProperties().entrySet();
 
 		render(properties);
+	}
+
+	private static TrainStatusNotifier getTrainStatusNotifier() {
+		return new TrainStatusNotifier(getEmailSender());
 	}
 
 	private static EmailSender getEmailSender() {
