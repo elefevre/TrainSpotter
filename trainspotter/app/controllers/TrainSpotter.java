@@ -3,8 +3,6 @@ package controllers;
 import static play.data.validation.Validation.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Map.Entry;
-import java.util.*;
 import models.TrainInformationPage;
 import org.joda.time.DateTime;
 import play.data.validation.Required;
@@ -26,12 +24,6 @@ public class TrainSpotter extends Controller {
 		getTrainStatusNotifier().notify(TO, trainNumber, results);
 
 		render(results);
-	}
-
-	public static void displaySystemProperties() {
-		Set<Entry<Object, Object>> properties = System.getProperties().entrySet();
-
-		render(properties);
 	}
 
 	private static TrainStatusNotifier getTrainStatusNotifier() {
