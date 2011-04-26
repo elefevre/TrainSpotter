@@ -15,3 +15,4 @@ trainspotter/precompiled
 trainspotter/logs
 trainspotter-prod*
 setenv.sh
+run.sh
