@@ -27,7 +27,7 @@ public class TrainSpotter extends Controller {
 	}
 
 	private static TrainStatusNotifier getTrainStatusNotifier() {
-		return new TrainStatusNotifier(getEmailSender());
+		return new TrainStatusNotifier(getEmailSender(), new TrainInformationPageDao());
 	}
 
 	private static EmailSender getEmailSender() {

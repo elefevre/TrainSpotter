@@ -9,7 +9,7 @@ import play.db.jpa.Model;
 public class TrainInformationPage extends Model {
 	public String trainNumber;
 	public String theoreticalDepartureDay;
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	public List<TrainStationStatus> trainStationStatus;
 
 	public TrainInformationPage(String trainNumber, String theoreticalDepartureDay, List<TrainStationStatus> trainStationStatus) {
