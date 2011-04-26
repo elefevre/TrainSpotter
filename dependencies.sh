@@ -4,5 +4,5 @@ cd TrainSpotter
 play dependencies --sync
 play eclipsify
 cd ..
-cp eclipse_settings/*.prefs TrainSpotter/.settings
+cp eclipse_settings/*.prefs trainspotter/.settings
 
