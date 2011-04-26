@@ -19,11 +19,11 @@ public class EmailSender {
 	public void sendEmail(String to, String title, String body, String from) {
 		String accessKey = systemManager.getProperty("AWS_ACCESS_KEY_ID");
 		String secretKey = systemManager.getProperty("AWS_SECRET_KEY");
-		AmazonSimpleEmailService email = amazonSimpleEmailServiceProvider.getService(accessKey, secretKey);
-		ListVerifiedEmailAddressesResult verifiedEmails = email.listVerifiedEmailAddresses();
+		AmazonSimpleEmailService amazonSimpleEmailService = amazonSimpleEmailServiceProvider.getService(accessKey, secretKey);
+		ListVerifiedEmailAddressesResult verifiedEmails = amazonSimpleEmailService.listVerifiedEmailAddresses();
 		for (String address : new String[] { to, from }) {
 			if (!verifiedEmails.getVerifiedEmailAddresses().contains(address)) {
-				email.verifyEmailAddress(amazonSimpleEmailServiceProvider.getVerifyEmailAddressRequest(address));
+				amazonSimpleEmailService.verifyEmailAddress(amazonSimpleEmailServiceProvider.getVerifyEmailAddressRequest(address));
 				// verification email sent
 				return;
 			}
@@ -32,7 +32,6 @@ public class EmailSender {
 		Session mailSession = createMailSession(accessKey, secretKey);
 
 		try {
-			// Create a new Message
 			Message msg = new MimeMessage(mailSession);
 			msg.setFrom(new InternetAddress(from));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
@@ -40,14 +39,9 @@ public class EmailSender {
 			msg.setText(body);
 			msg.saveChanges();
 
-			// Reuse one Transport object for sending all your messages
-			// for better performance
 			Transport t = amazonSimpleEmailServiceProvider.getTransport(mailSession);
 			t.connect();
 			t.sendMessage(msg, null);
-
-			// Close your transport when you're completely done sending
-			// all your messages
 			t.close();
 		} catch (AddressException e) {
 			Throwables.propagate(e);
@@ -62,8 +56,7 @@ public class EmailSender {
 		props.setProperty("mail.aws.user", accessKey);
 		props.setProperty("mail.aws.password", secretKey);
 
-		Session mailSession = Session.getInstance(props);
-		return mailSession;
+		return Session.getInstance(props);
 	}
 
 }
