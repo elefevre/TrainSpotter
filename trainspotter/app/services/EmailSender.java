@@ -30,12 +30,7 @@ public class EmailSender {
 			}
 		}
 
-		Properties props = new Properties();
-		props.setProperty("mail.transport.protocol", "aws");
-		props.setProperty("mail.aws.user", accessKey);
-		props.setProperty("mail.aws.password", secretKey);
-
-		Session mailSession = Session.getInstance(props);
+		Session mailSession = createMailSession(accessKey, secretKey);
 
 		try {
 			// Create a new Message
@@ -55,12 +50,21 @@ public class EmailSender {
 			// Close your transport when you're completely done sending
 			// all your messages
 			t.close();
-
 		} catch (AddressException e) {
 			Throwables.propagate(e);
 		} catch (MessagingException e) {
 			Throwables.propagate(e);
 		}
+	}
+
+	private static Session createMailSession(String accessKey, String secretKey) {
+		Properties props = new Properties();
+		props.setProperty("mail.transport.protocol", "aws");
+		props.setProperty("mail.aws.user", accessKey);
+		props.setProperty("mail.aws.password", secretKey);
+
+		Session mailSession = Session.getInstance(props);
+		return mailSession;
 	}
 
 }
