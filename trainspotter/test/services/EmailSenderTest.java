@@ -19,21 +19,36 @@ public class EmailSenderTest extends UnitTest {
 	private final AmazonSimpleEmailServiceProvider mockAmazonSimpleEmailServiceProvider = mock(AmazonSimpleEmailServiceProvider.class);
 	private final AmazonSimpleEmailService mockAmazonSimpleEmailService = mock(AmazonSimpleEmailService.class);
 	private final ListVerifiedEmailAddressesResult mockListVerifiedEmailAddressesResult = mock(ListVerifiedEmailAddressesResult.class);
-	private final VerifyEmailAddressRequest mockVerifyEmailAddressRequest = mock(VerifyEmailAddressRequest.class);
+	private final VerifyEmailAddressRequest mockVerifyEmailAddressRequestForSender = mock(VerifyEmailAddressRequest.class);
+	private final VerifyEmailAddressRequest mockVerifyEmailAddressRequestForReceipient = mock(VerifyEmailAddressRequest.class);
 	private final Transport mockTransport = mock(Transport.class);
 
 	@Test
-	public void shouldVerifyEmailAddresses() {
+	public void shouldVerifyTheEmailAddressOfTheSender() {
 		when(mockSystemManager.getProperty("AWS_ACCESS_KEY_ID")).thenReturn("accessKey");
 		when(mockSystemManager.getProperty("AWS_SECRET_KEY")).thenReturn("secretKey");
-		when(mockAmazonSimpleEmailServiceProvider.getVerifyEmailAddressRequest("ericlef@gmail.com")).thenReturn(mockVerifyEmailAddressRequest);
+		when(mockAmazonSimpleEmailServiceProvider.getVerifyEmailAddressRequest("ericlef@gmail.com")).thenReturn(mockVerifyEmailAddressRequestForSender);
 		when(mockAmazonSimpleEmailServiceProvider.getService("accessKey", "secretKey")).thenReturn(mockAmazonSimpleEmailService);
 		when(mockAmazonSimpleEmailService.listVerifiedEmailAddresses()).thenReturn(mockListVerifiedEmailAddressesResult);
-		when(mockListVerifiedEmailAddressesResult.getVerifiedEmailAddresses()).thenReturn(Lists.<String> newArrayList());
+		when(mockListVerifiedEmailAddressesResult.getVerifiedEmailAddresses()).thenReturn(Lists.<String> newArrayList("user@site.com"));
 
-		new EmailSender(mockSystemManager, mockAmazonSimpleEmailServiceProvider).sendEmail();
+		new EmailSender(mockSystemManager, mockAmazonSimpleEmailServiceProvider).sendEmail("user@site.com", null, null);
 
-		verify(mockAmazonSimpleEmailService).verifyEmailAddress(mockVerifyEmailAddressRequest);
+		verify(mockAmazonSimpleEmailService).verifyEmailAddress(mockVerifyEmailAddressRequestForSender);
+	}
+
+	@Test
+	public void shouldVerifyTheEmailAddressOfTheReceipient() {
+		when(mockSystemManager.getProperty("AWS_ACCESS_KEY_ID")).thenReturn("accessKey");
+		when(mockSystemManager.getProperty("AWS_SECRET_KEY")).thenReturn("secretKey");
+		when(mockAmazonSimpleEmailServiceProvider.getVerifyEmailAddressRequest("user@site.com")).thenReturn(mockVerifyEmailAddressRequestForReceipient);
+		when(mockAmazonSimpleEmailServiceProvider.getService("accessKey", "secretKey")).thenReturn(mockAmazonSimpleEmailService);
+		when(mockAmazonSimpleEmailService.listVerifiedEmailAddresses()).thenReturn(mockListVerifiedEmailAddressesResult);
+		when(mockListVerifiedEmailAddressesResult.getVerifiedEmailAddresses()).thenReturn(Lists.<String> newArrayList("ericlef@gmail.com"));
+
+		new EmailSender(mockSystemManager, mockAmazonSimpleEmailServiceProvider).sendEmail("user@site.com", null, null);
+
+		verify(mockAmazonSimpleEmailService).verifyEmailAddress(mockVerifyEmailAddressRequestForReceipient);
 	}
 
 	@Test
@@ -45,14 +60,14 @@ public class EmailSenderTest extends UnitTest {
 		when(mockAmazonSimpleEmailServiceProvider.getService("accessKey", "secretKey")).thenReturn(mockAmazonSimpleEmailService);
 		when(mockAmazonSimpleEmailServiceProvider.getTransport(sessionEqualTo(session))).thenReturn(mockTransport);
 		when(mockAmazonSimpleEmailService.listVerifiedEmailAddresses()).thenReturn(mockListVerifiedEmailAddressesResult);
-		when(mockListVerifiedEmailAddressesResult.getVerifiedEmailAddresses()).thenReturn(Lists.<String> newArrayList("ericlef@gmail.com"));
+		when(mockListVerifiedEmailAddressesResult.getVerifiedEmailAddresses()).thenReturn(Lists.<String> newArrayList("ericlef@gmail.com", "user@site.com"));
 
-		new EmailSender(mockSystemManager, mockAmazonSimpleEmailServiceProvider).sendEmail();
+		new EmailSender(mockSystemManager, mockAmazonSimpleEmailServiceProvider).sendEmail("user@site.com", "subject", "email body");
 
-		verify(mockAmazonSimpleEmailService, never()).verifyEmailAddress(mockVerifyEmailAddressRequest);
+		verify(mockAmazonSimpleEmailService, never()).verifyEmailAddress(any(VerifyEmailAddressRequest.class));
 		InOrder inOrder = inOrder(mockTransport);
 		inOrder.verify(mockTransport).connect();
-		inOrder.verify(mockTransport).sendMessage(mimeMessage("ericlef@gmail.com", "ericlef@gmail.com", "Hello World!", "Hello World!"), (Address[]) isNull());
+		inOrder.verify(mockTransport).sendMessage(mimeMessage("ericlef@gmail.com", "user@site.com", "subject", "email body"), (Address[]) isNull());
 		inOrder.verify(mockTransport).close();
 	}
 

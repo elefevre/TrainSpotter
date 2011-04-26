@@ -17,12 +17,12 @@ public class EmailSender {
 		this.amazonSimpleEmailServiceProvider = amazonSimpleEmailServiceProvider;
 	}
 
-	public void sendEmail() {
+	public void sendEmail(String to, String title, String body) {
 		String accessKey = systemManager.getProperty("AWS_ACCESS_KEY_ID");
 		String secretKey = systemManager.getProperty("AWS_SECRET_KEY");
 		AmazonSimpleEmailService email = amazonSimpleEmailServiceProvider.getService(accessKey, secretKey);
 		ListVerifiedEmailAddressesResult verifiedEmails = email.listVerifiedEmailAddresses();
-		for (String address : new String[] { TrainSpotter.TO, TrainSpotter.FROM }) {
+		for (String address : new String[] { to, TrainSpotter.FROM }) {
 			if (!verifiedEmails.getVerifiedEmailAddresses().contains(address)) {
 				email.verifyEmailAddress(amazonSimpleEmailServiceProvider.getVerifyEmailAddressRequest(address));
 				// verification email sent
@@ -37,8 +37,8 @@ public class EmailSender {
 			Message msg = new MimeMessage(mailSession);
 			msg.setFrom(new InternetAddress(TrainSpotter.FROM));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(TrainSpotter.TO));
-			msg.setSubject(TrainSpotter.SUBJECT);
-			msg.setText(TrainSpotter.BODY);
+			msg.setSubject(title);
+			msg.setText(body);
 			msg.saveChanges();
 
 			// Reuse one Transport object for sending all your messages

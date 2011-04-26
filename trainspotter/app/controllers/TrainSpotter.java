@@ -37,7 +37,7 @@ public class TrainSpotter extends Controller {
 	}
 
 	public static void sendEmail() {
-		getEmailSender().sendEmail();
+		getEmailSender().sendEmail(TrainSpotter.TO, TrainSpotter.SUBJECT, TrainSpotter.BODY);
 	}
 
 	private static EmailSender getEmailSender() {
