@@ -6,7 +6,6 @@ import javax.mail.internet.*;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.ListVerifiedEmailAddressesResult;
 import com.google.common.base.Throwables;
-import controllers.TrainSpotter;
 
 public class EmailSender {
 	private final SystemManager systemManager;
@@ -17,12 +16,12 @@ public class EmailSender {
 		this.amazonSimpleEmailServiceProvider = amazonSimpleEmailServiceProvider;
 	}
 
-	public void sendEmail(String to, String title, String body) {
+	public void sendEmail(String to, String title, String body, String from) {
 		String accessKey = systemManager.getProperty("AWS_ACCESS_KEY_ID");
 		String secretKey = systemManager.getProperty("AWS_SECRET_KEY");
 		AmazonSimpleEmailService email = amazonSimpleEmailServiceProvider.getService(accessKey, secretKey);
 		ListVerifiedEmailAddressesResult verifiedEmails = email.listVerifiedEmailAddresses();
-		for (String address : new String[] { to, TrainSpotter.FROM }) {
+		for (String address : new String[] { to, from }) {
 			if (!verifiedEmails.getVerifiedEmailAddresses().contains(address)) {
 				email.verifyEmailAddress(amazonSimpleEmailServiceProvider.getVerifyEmailAddressRequest(address));
 				// verification email sent
@@ -35,8 +34,8 @@ public class EmailSender {
 		try {
 			// Create a new Message
 			Message msg = new MimeMessage(mailSession);
-			msg.setFrom(new InternetAddress(TrainSpotter.FROM));
-			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(TrainSpotter.TO));
+			msg.setFrom(new InternetAddress(from));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			msg.setSubject(title);
 			msg.setText(body);
 			msg.saveChanges();

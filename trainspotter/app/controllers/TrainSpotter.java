@@ -12,10 +12,10 @@ import play.mvc.Controller;
 import services.*;
 
 public class TrainSpotter extends Controller {
-	public static final String TO = "ericlef@gmail.com";
-	public static final String FROM = "ericlef@gmail.com";
-	public static final String BODY = "Hello World!";
-	public static final String SUBJECT = "Hello World!";
+	private static final String TO = "ericlef@gmail.com";
+	private static final String FROM = "ericlef@gmail.com";
+	private static final String BODY = "Hello World!";
+	private static final String SUBJECT = "Hello World!";
 
 	public static void displayTrainDetails(@Required String trainNumber) throws MalformedURLException, IOException {
 		if (hasErrors()) {
@@ -37,7 +37,7 @@ public class TrainSpotter extends Controller {
 	}
 
 	public static void sendEmail() {
-		getEmailSender().sendEmail(TrainSpotter.TO, TrainSpotter.SUBJECT, TrainSpotter.BODY);
+		getEmailSender().sendEmail(TrainSpotter.TO, TrainSpotter.SUBJECT, TrainSpotter.BODY, TrainSpotter.FROM);
 	}
 
 	private static EmailSender getEmailSender() {

@@ -32,7 +32,7 @@ public class EmailSenderTest extends UnitTest {
 		when(mockAmazonSimpleEmailService.listVerifiedEmailAddresses()).thenReturn(mockListVerifiedEmailAddressesResult);
 		when(mockListVerifiedEmailAddressesResult.getVerifiedEmailAddresses()).thenReturn(Lists.<String> newArrayList("user@site.com"));
 
-		new EmailSender(mockSystemManager, mockAmazonSimpleEmailServiceProvider).sendEmail("user@site.com", null, null);
+		new EmailSender(mockSystemManager, mockAmazonSimpleEmailServiceProvider).sendEmail("user@site.com", null, null, "ericlef@gmail.com");
 
 		verify(mockAmazonSimpleEmailService).verifyEmailAddress(mockVerifyEmailAddressRequestForSender);
 	}
@@ -46,7 +46,7 @@ public class EmailSenderTest extends UnitTest {
 		when(mockAmazonSimpleEmailService.listVerifiedEmailAddresses()).thenReturn(mockListVerifiedEmailAddressesResult);
 		when(mockListVerifiedEmailAddressesResult.getVerifiedEmailAddresses()).thenReturn(Lists.<String> newArrayList("ericlef@gmail.com"));
 
-		new EmailSender(mockSystemManager, mockAmazonSimpleEmailServiceProvider).sendEmail("user@site.com", null, null);
+		new EmailSender(mockSystemManager, mockAmazonSimpleEmailServiceProvider).sendEmail("user@site.com", null, null, "ericlef@gmail.com");
 
 		verify(mockAmazonSimpleEmailService).verifyEmailAddress(mockVerifyEmailAddressRequestForReceipient);
 	}
@@ -62,7 +62,7 @@ public class EmailSenderTest extends UnitTest {
 		when(mockAmazonSimpleEmailService.listVerifiedEmailAddresses()).thenReturn(mockListVerifiedEmailAddressesResult);
 		when(mockListVerifiedEmailAddressesResult.getVerifiedEmailAddresses()).thenReturn(Lists.<String> newArrayList("ericlef@gmail.com", "user@site.com"));
 
-		new EmailSender(mockSystemManager, mockAmazonSimpleEmailServiceProvider).sendEmail("user@site.com", "subject", "email body");
+		new EmailSender(mockSystemManager, mockAmazonSimpleEmailServiceProvider).sendEmail("user@site.com", "subject", "email body", "ericlef@gmail.com");
 
 		verify(mockAmazonSimpleEmailService, never()).verifyEmailAddress(any(VerifyEmailAddressRequest.class));
 		InOrder inOrder = inOrder(mockTransport);
