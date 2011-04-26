@@ -2,6 +2,7 @@
 
 require:
     - play
+    - play -> guice 1.1.1
     - com.google.guava -> guava r08
     - joda-time -> joda-time [1.6,)
     - commons-io -> commons-io [2.0.1,)

@@ -8,6 +8,7 @@
 target
 infinitest.filters
 trainspotter/tmp
+trainspotter/modules
 trainspotter/eclipse
 trainspotter/test-result
 trainspotter/lib
