@@ -21,6 +21,8 @@ public class TrainStatusNotifier {
 		if (allTrains.isEmpty() || haveDetailsChanged(Iterables.getFirst(allTrains, null), trainInformationPage)) {
 			trainInformationPageDao.save(trainInformationPage);
 			sendEmail(to, trainNumber, trainInformationPage);
+		} else {
+			emailSender.sendEmail(to, "Train " + trainNumber, "No change", FROM);
 		}
 	}
 

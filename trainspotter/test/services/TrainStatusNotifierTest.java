@@ -29,7 +29,7 @@ public class TrainStatusNotifierTest extends UnitTest {
 
 		notifier.notify("user@site.com", "7000", new TrainInformationPage("7000", "20/10/2011", newArrayList(new TrainStationStatus("Paris-Nord", "10:00", "A l'heure"), new TrainStationStatus("Orléans", "11:00", "A l'heure"))));
 
-		verifyZeroInteractions(mockEmailSender);
+		verify(mockEmailSender).sendEmail("user@site.com", "Train 7000", "No change", "ericlef@gmail.com");
 		verify(mockTrainInformationPageDao, never()).save(any(TrainInformationPage.class));
 	}
 
