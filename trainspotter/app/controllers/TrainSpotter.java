@@ -13,17 +13,9 @@ import services.*;
 public class TrainSpotter extends Controller {
 	private static final String TO = "ericlef@gmail.com";
 	@Inject
-	static SystemManager systemManager;
+	private static StatusPageRetriever statusPageRetriever;
 	@Inject
-	static TrainInformationPageDao trainInformationPageDao;
-	@Inject
-	static AmazonSimpleEmailServiceProvider amazonSimpleEmailServiceProvider;
-	@Inject
-	static URLConnectionProvider urlConnectionProvider;
-	@Inject
-	static ResultsPageParser resultsPageParser;
-	@Inject
-	static StatusPageRetriever statusPageRetriever;
+	private static TrainStatusNotifier trainStatusNotifier;
 
 	public static void displayTrainDetails(@Required String trainNumber) throws MalformedURLException, IOException {
 		if (hasErrors()) {
@@ -33,21 +25,10 @@ public class TrainSpotter extends Controller {
 
 		DateTime today = new DateTime();
 
-		TrainInformationPage results = getStatusPageRetriever().downloadStatusPageForTrain(trainNumber, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth());
-		getTrainStatusNotifier().notify(TO, trainNumber, results);
+		TrainInformationPage results = statusPageRetriever.downloadStatusPageForTrain(trainNumber, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth());
+		trainStatusNotifier.notify(TO, trainNumber, results);
 
 		render(results);
 	}
 
-	private static TrainStatusNotifier getTrainStatusNotifier() {
-		return new TrainStatusNotifier(getEmailSender(), trainInformationPageDao);
-	}
-
-	private static EmailSender getEmailSender() {
-		return new EmailSender(systemManager, amazonSimpleEmailServiceProvider);
-	}
-
-	private static StatusPageRetriever getStatusPageRetriever() {
-		return new StatusPageRetriever(urlConnectionProvider, resultsPageParser);
-	}
 }
