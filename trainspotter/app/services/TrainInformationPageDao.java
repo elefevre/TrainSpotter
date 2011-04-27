@@ -6,7 +6,6 @@ import models.TrainInformationPage;
 import play.db.jpa.JPA;
 
 public class TrainInformationPageDao {
-
 	public List<TrainInformationPage> find(String trainNumber) {
 		CriteriaBuilder criteriaBuilder = JPA.em().getCriteriaBuilder();
 		CriteriaQuery<TrainInformationPage> query = criteriaBuilder.createQuery(TrainInformationPage.class);
@@ -21,4 +20,12 @@ public class TrainInformationPageDao {
 		trainInformationPage.save();
 	}
 
+	public List<TrainInformationPage> findAll() {
+		CriteriaBuilder criteriaBuilder = JPA.em().getCriteriaBuilder();
+		CriteriaQuery<TrainInformationPage> query = criteriaBuilder.createQuery(TrainInformationPage.class);
+		Root<TrainInformationPage> from = query.from(TrainInformationPage.class);
+		query.select(from);
+
+		return JPA.em().createQuery(query).getResultList();
+	}
 }

@@ -1,5 +1,6 @@
 package services;
 
+import jobs.CheckTrainStatusService;
 import com.google.inject.*;
 
 public class GuicyModule extends AbstractModule {
@@ -21,5 +22,10 @@ public class GuicyModule extends AbstractModule {
 	@Provides
 	public EmailSender getEmailSender(SystemManager systemManager, AmazonSimpleEmailServiceProvider amazonSimpleEmailServiceProvider) {
 		return new EmailSender(systemManager, amazonSimpleEmailServiceProvider);
+	}
+
+	@Provides
+	public CheckTrainStatusService getCheckTrainStatus(TrainInformationPageDao trainInformationPageDao, StatusPageRetriever statusPageRetriever, TrainStatusNotifier trainStatusNotifier, TimeManager timeManager) {
+		return new CheckTrainStatusService(trainInformationPageDao, statusPageRetriever, trainStatusNotifier, timeManager);
 	}
 }
