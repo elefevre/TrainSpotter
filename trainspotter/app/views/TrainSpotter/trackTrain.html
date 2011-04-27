@@ -1,10 +1,7 @@
 #{extends 'main.html' /}
 #{set title:'Home' /}
 
-<h1>Received train number ${results.trainNumber}</h1>
-<h2>Departure date is ${results.theoreticalDepartureDay}</h1>
-
-<a href="@{TrainSpotter.trackTrain()}?trainNumber=${results.trainNumber}">Recevoir un mail quand ce train est en retard</a>
+<h1>Vous serez informé quand le train ${results.trainNumber} change</h1>
 
 <table>
 	<thead>
@@ -22,4 +19,4 @@
 </table>
 
 <hr/>
-<a href="@{Application.index()}">Back to form</a>
+<a href="@{Application.index()}">Retour à l'accueil</a>

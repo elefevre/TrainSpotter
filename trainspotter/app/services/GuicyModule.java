@@ -28,4 +28,9 @@ public class GuicyModule extends AbstractModule {
 	public CheckTrainStatusService getCheckTrainStatus(TrainInformationPageDao trainInformationPageDao, StatusPageRetriever statusPageRetriever, TrainStatusNotifier trainStatusNotifier, TimeManager timeManager) {
 		return new CheckTrainStatusService(trainInformationPageDao, statusPageRetriever, trainStatusNotifier, timeManager);
 	}
+
+	@Provides
+	public TrainTracker getTrainTracker(TrainInformationPageDao trainInformationPageDao, StatusPageRetriever statusPageRetriever, TimeManager timeManager) {
+		return new TrainTracker(trainInformationPageDao, statusPageRetriever, timeManager);
+	}
 }
