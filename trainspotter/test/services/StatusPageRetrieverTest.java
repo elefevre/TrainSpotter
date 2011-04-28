@@ -1,15 +1,12 @@
 package services;
+
 import static org.mockito.Mockito.*;
 import java.io.*;
 import java.net.MalformedURLException;
-import models.*;
+import models.TrainInformationPage;
 import org.fest.assertions.Assertions;
 import org.junit.Test;
-
 import play.test.UnitTest;
-import services.ResultsPageParser;
-import services.StatusPageRetriever;
-import services.URLConnectionProvider;
 
 public class StatusPageRetrieverTest extends UnitTest {
 	private final URLConnectionProvider urlConnectionProvider = mock(URLConnectionProvider.class);
