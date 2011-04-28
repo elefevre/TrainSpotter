@@ -4,9 +4,7 @@ import static net.htmlparser.jericho.HTMLElementName.*;
 import static org.apache.commons.lang.StringUtils.*;
 import java.util.*;
 import java.util.regex.*;
-
-import models.TrainInformationPage;
-import models.TrainStationStatus;
+import models.*;
 import net.htmlparser.jericho.*;
 import org.apache.commons.lang.StringUtils;
 import com.google.common.collect.*;
@@ -26,22 +24,7 @@ public class ResultsPageParser {
 	}
 
 	private String getDepartureDate(String content) {
-		return extract("\\(le (.*)\\)<", content);
-	}
-
-	private String extract(String regex, String content) {
-		Pattern pattern = Pattern.compile(regex);
-
-		String[] splittedPage = content.split("\n");
-
-		String value = null;
-		for (String line : splittedPage) {
-			Matcher matcher = pattern.matcher(line);
-			if (matcher.find()) {
-				value = matcher.group(1);
-			}
-		}
-		return value;
+		return RegexUtils.extractFirstMatchInMultiLines("\\(le (.*)\\)<", content);
 	}
 
 	private List<TrainStationStatus> getStationDetails(String content) {
