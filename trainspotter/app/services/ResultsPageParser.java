@@ -3,7 +3,6 @@ package services;
 import static net.htmlparser.jericho.HTMLElementName.*;
 import static org.apache.commons.lang.StringUtils.*;
 import java.util.*;
-import java.util.regex.*;
 import models.*;
 import net.htmlparser.jericho.*;
 import org.apache.commons.lang.StringUtils;
