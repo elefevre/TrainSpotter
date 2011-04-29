@@ -7,13 +7,13 @@ import services.SupportedOAuthSites;
 
 @Entity
 public class User extends Model {
-	public String idOnSite;
+	public String idOnAuthSite;
 	public SupportedOAuthSites oAuthSite;
 	public String name;
 
-	public User(SupportedOAuthSites oAuthSite, String idOnSite, String name) {
+	public User(SupportedOAuthSites oAuthSite, String idOnAuthSite, String name) {
 		this.oAuthSite = oAuthSite;
-		this.idOnSite = idOnSite;
+		this.idOnAuthSite = idOnAuthSite;
 		this.name = name;
 	}
 

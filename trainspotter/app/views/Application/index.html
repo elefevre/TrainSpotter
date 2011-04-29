@@ -17,16 +17,20 @@
 <hr/>
 
 <h2>Utilisateurs</h2>
-<table>
+<h3>Connecté: ${user}</h3>
+
+<table border="1">
 	<thead>
+		<td>TrainSpotter id</td>
 		<td>Site</td>
 		<td>id</td>
 		<td>name</td>
 	</thead>
 	#{list items:users, as:'user'}
 		<tr>
-			<td>${user.oAuthSite}</td>
 			<td>${user.id}</td>
+			<td>${user.oAuthSite}</td>
+			<td>${user.idOnAuthSite}</td>
 			<td>${user.name}</td>
 		</tr>
 	#{/list}
