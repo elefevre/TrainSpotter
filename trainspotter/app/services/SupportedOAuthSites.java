@@ -1,6 +1,8 @@
 package services;
 
+import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.*;
+import org.scribe.oauth.OAuthService;
 
 public enum SupportedOAuthSites {
 	TWITTER(TwitterApi.class, "BgemIlLgxX0vCTPMAN61g", "PARAM1");
@@ -25,5 +27,13 @@ public enum SupportedOAuthSites {
 
 	public String getApplicationSecretKey() {
 		return applicationSecretKey;
+	}
+
+	public OAuthService createService() {
+		return new ServiceBuilder()//
+				.provider(getApiClass())//
+				.apiKey(getApplicationApiKey())//
+				.apiSecret(getApplicationSecretKey())//
+				.build();
 	}
 }

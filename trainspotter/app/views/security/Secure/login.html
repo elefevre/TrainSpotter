@@ -1,0 +1,33 @@
+#{extends 'security/Secure/layout.html' /}
+
+<div id="login">
+	
+	<h1>Merci d'entrer le code de vérification</h1>
+	
+	URL: ${requestUrl}
+	<p>
+	User id: ${userId}
+		
+	#{form @authenticate()}
+		
+		#{if flash.error}
+			<p class="error">
+				&{flash.error}
+			</p>
+		#{/if}
+		#{if flash.success}
+			<p class="success">
+				&{flash.success}
+			</p>
+		#{/if}
+	
+		<input type="hidden" name="userId" id="userId" value="${userId}" />
+		<p id="password-field">
+			<label for="password">Verifier code</label>
+			<input type="password" name="verifierCode" id="verifierCode" value="" />
+		</p>
+		<p id="signin-field">
+			<input type="submit" id="signin" value="&{'secure.signin'}" />
+		</p>
+	#{/form}
+</div>

@@ -2,6 +2,7 @@ package models;
 
 import javax.persistence.Entity;
 import org.apache.commons.lang.builder.*;
+import org.scribe.model.Token;
 import play.db.jpa.Model;
 import services.SupportedOAuthSites;
 
@@ -10,11 +11,25 @@ public class User extends Model {
 	public String idOnAuthSite;
 	public SupportedOAuthSites oAuthSite;
 	public String name;
+	public Status status;
+	String tokenValue;
+	String tokenSecret;
 
-	public User(SupportedOAuthSites oAuthSite, String idOnAuthSite, String name) {
+	public User(SupportedOAuthSites oAuthSite, String idOnAuthSite, String name, Token token, Status status) {
 		this.oAuthSite = oAuthSite;
 		this.idOnAuthSite = idOnAuthSite;
 		this.name = name;
+		setToken(token);
+		this.status = status;
+	}
+
+	public Token getToken() {
+		return new Token(tokenValue, tokenSecret);
+	}
+
+	public void setToken(Token token) {
+		tokenValue = token.getToken();
+		tokenSecret = token.getSecret();
 	}
 
 	@Override
@@ -30,6 +45,10 @@ public class User extends Model {
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
+	}
+
+	public enum Status {
+		ACCESS_REQUESTED, AUTHENTICATED
 	}
 
 }

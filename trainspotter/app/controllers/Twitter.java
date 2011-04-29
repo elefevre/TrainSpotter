@@ -1,21 +1,18 @@
 package controllers;
 
+import static models.User.Status.*;
 import static org.scribe.model.Verb.*;
+import static services.SupportedOAuthSites.*;
 import java.util.Scanner;
 import models.User;
-import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.*;
 import org.scribe.oauth.OAuthService;
 import play.mvc.Controller;
-import services.*;
+import services.RegexUtils;
 
-public class Authentication extends Controller {
+public class Twitter extends Controller {
 	public static void login() {
-		OAuthService service = new ServiceBuilder()//
-				.provider(SupportedOAuthSites.TWITTER.getApiClass())//
-				.apiKey(SupportedOAuthSites.TWITTER.getApplicationApiKey())//
-				.apiSecret(SupportedOAuthSites.TWITTER.getApplicationSecretKey())//
-				.build();
+		OAuthService service = TWITTER.createService();
 		Token requestToken = service.getRequestToken();
 
 		Scanner in = new Scanner(System.in);
@@ -33,6 +30,7 @@ public class Authentication extends Controller {
 
 		String id = RegexUtils.extractFirstMatchInMultiLines("<id>(.*)</id>", oauthResponse.getBody());
 		String name = RegexUtils.extractFirstMatchInMultiLines("<name>(.*)</name>", oauthResponse.getBody());
-		new User(SupportedOAuthSites.TWITTER, id, name).save();
+		new User(TWITTER, id, name, accessToken, AUTHENTICATED).save();
 	}
+
 }

@@ -13,13 +13,11 @@
     <body>
         #{doLayout /}
         <hr/>
-		<a href="@{Authentication.login()}">Se connecter avec Twitter</a>
-		<br/>
 
-		%{ user = controllers.Secure.Security.connected() }%
+		%{ user = controllers.security.Secure.Security.connected() }%
 		#{if user}
-		    Bonjour, ${user}
-			<a href="/logout}">Se déconnecter</a>
+		    Bonjour, ${user.name}
+			<a href="/logout">Se déconnecter</a>
 		#{/if}
 		#{else}
 			<a href="/login">Se connecter</a>
