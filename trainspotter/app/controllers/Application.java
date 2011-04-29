@@ -7,7 +7,7 @@ import play.mvc.Controller;
 public class Application extends Controller {
 
 	public static void index() {
-		List<User> users = User.findAll();
+		@SuppressWarnings("static-access") List<User> users = User.findAll();
 		render(users);
 	}
 
