@@ -14,7 +14,8 @@ public class Authentication extends Controller {
 		OAuthService service = new ServiceBuilder()//
 				.provider(SupportedOAuthSites.TWITTER.getApiClass())//
 				.apiKey(SupportedOAuthSites.TWITTER.getApplicationApiKey())//
-				.apiSecret(SupportedOAuthSites.TWITTER.getApplicationSecretKey()).build();
+				.apiSecret(SupportedOAuthSites.TWITTER.getApplicationSecretKey())//
+				.build();
 		Token requestToken = service.getRequestToken();
 
 		Scanner in = new Scanner(System.in);
