@@ -14,23 +14,3 @@
 	<input type="text" name="trainNumber" value="7015" />
 	<input type="submit" value="Que fait ce train ?" />
 </form>
-<hr/>
-
-<h2>Utilisateurs</h2>
-
-<table border="1">
-	<thead>
-		<td>TrainSpotter id</td>
-		<td>Site</td>
-		<td>id</td>
-		<td>name</td>
-	</thead>
-	#{list items:users, as:'user'}
-		<tr>
-			<td>${user.id}</td>
-			<td>${user.oAuthSite}</td>
-			<td>${user.idOnAuthSite}</td>
-			<td>${user.name}</td>
-		</tr>
-	#{/list}
-</table>
