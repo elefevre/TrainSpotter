@@ -16,7 +16,7 @@ public class Secure extends Controller {
 
 	@Before(unless = { "login", "authenticate", "logout" })
 	static void checkAccess() {
-		if (!Security.isConnected()) {
+		if (!isConnected()) {
 			flash.put("url", "GET".equals(request.method) ? request.url : "/"); // seems a good default
 			login();
 		}
@@ -31,10 +31,10 @@ public class Secure extends Controller {
 	}
 
 	private static void check(Check check) {
-		for (String profile : check.value()) {
-			boolean hasProfile = Security.check(profile);
+		for (@SuppressWarnings("unused") String profile : check.value()) {
+			boolean hasProfile = true; // to be implemented
 			if (!hasProfile) {
-				Security.onCheckFailed(profile);
+				// to be implemented
 			}
 		}
 	}
@@ -46,11 +46,12 @@ public class Secure extends Controller {
 			String userId = remember.value.substring(remember.value.indexOf("-") + 1);
 			if (Crypto.sign(userId).equals(sign)) {
 				saveUserId(Long.parseLong(userId));
-				if (Security.isConnected()) {
+				if (isConnected()) {
 					redirectToOriginalURL();
 				}
 			}
 		}
+
 		flash.keep("url");
 
 		OAuthService service = TWITTER.createService();
@@ -121,54 +122,24 @@ public class Secure extends Controller {
 		session.put(USER_ID_PROPERTY_NAME, userId);
 	}
 
-	public static class Security extends Controller {
-		/**
-		 * This method checks that a profile is allowed to view this
-		 * page/method. This method is called prior to the method's controller
-		 * annotated with the @Check method.
-		 * 
-		 * @param profile
-		 * @return true if you are allowed to execute this controller method.
-		 */
-		static boolean check(String profile) {
-			return true;
+	@SuppressWarnings("static-access")
+	public static User connected() {
+		String userId = getUserId();
+		if (userId == null) {
+			return null;
 		}
-
-		@SuppressWarnings("static-access")
-		static User connected() {
-			String userId = getUserId();
-			if (userId == null) {
-				return null;
-			}
-			long userIdAsLong;
-			try {
-				userIdAsLong = Long.parseLong(userId);
-			} catch (Throwable e) {
-				e.printStackTrace();
-				return null;
-			}
-			return User.findById(userIdAsLong);
+		long userIdAsLong;
+		try {
+			userIdAsLong = Long.parseLong(userId);
+		} catch (Throwable e) {
+			e.printStackTrace();
+			return null;
 		}
+		return User.findById(userIdAsLong);
+	}
 
-		/**
-		 * Indicate if a user is currently connected
-		 * 
-		 * @return true if the user is connected
-		 */
-		static boolean isConnected() {
-			return connected() != null;
-		}
-
-		/**
-		 * This method is called if a check does not succeed. By default it
-		 * shows the not allowed page (the controller forbidden method).
-		 * 
-		 * @param profile
-		 */
-		static void onCheckFailed(String profile) {
-			forbidden();
-		}
-
+	public static boolean isConnected() {
+		return connected() != null;
 	}
 
 }
