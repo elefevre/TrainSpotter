@@ -11,16 +11,14 @@ public class User extends Model {
 	public String idOnAuthSite;
 	public SupportedOAuthSites oAuthSite;
 	public String name;
-	public Status status;
 	String tokenValue;
 	String tokenSecret;
 
-	public User(SupportedOAuthSites oAuthSite, String idOnAuthSite, String name, Token token, Status status) {
+	public User(SupportedOAuthSites oAuthSite, String idOnAuthSite, String name, Token token) {
 		this.oAuthSite = oAuthSite;
 		this.idOnAuthSite = idOnAuthSite;
 		this.name = name;
 		setToken(token);
-		this.status = status;
 	}
 
 	public Token getToken() {
@@ -45,10 +43,6 @@ public class User extends Model {
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
-	}
-
-	public enum Status {
-		ACCESS_REQUESTED, AUTHENTICATED
 	}
 
 }

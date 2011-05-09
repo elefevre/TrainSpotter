@@ -2,8 +2,7 @@ package controllers.security;
 
 import static org.scribe.model.Verb.*;
 import static services.SupportedOAuthSites.*;
-import models.*;
-import models.User.Status;
+import models.User;
 import org.scribe.model.*;
 import org.scribe.oauth.OAuthService;
 import play.data.validation.*;
@@ -56,7 +55,7 @@ public class Secure extends Controller {
 
 		OAuthService service = TWITTER.createService();
 		Token requestToken = service.getRequestToken();
-		User user = new User(TWITTER, null, null, requestToken, Status.ACCESS_REQUESTED);
+		User user = new User(TWITTER, null, null, requestToken);
 		user.save();
 
 		String requestUrl = service.getAuthorizationUrl(requestToken);
@@ -103,7 +102,6 @@ public class Secure extends Controller {
 		user.idOnAuthSite = id;
 		user.name = name;
 		user.setToken(accessToken);
-		user.status = Status.AUTHENTICATED;
 		user.save();
 	}
 

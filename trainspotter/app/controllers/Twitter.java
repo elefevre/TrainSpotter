@@ -1,6 +1,5 @@
 package controllers;
 
-import static models.User.Status.*;
 import static org.scribe.model.Verb.*;
 import static services.SupportedOAuthSites.*;
 import java.util.Scanner;
@@ -30,7 +29,7 @@ public class Twitter extends Controller {
 
 		String id = RegexUtils.extractFirstMatchInMultiLines("<id>(.*)</id>", oauthResponse.getBody());
 		String name = RegexUtils.extractFirstMatchInMultiLines("<name>(.*)</name>", oauthResponse.getBody());
-		new User(TWITTER, id, name, accessToken, AUTHENTICATED).save();
+		new User(TWITTER, id, name, accessToken).save();
 	}
 
 }
