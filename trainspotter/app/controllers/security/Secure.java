@@ -10,6 +10,7 @@ import play.mvc.*;
 import services.RegexUtils;
 
 public class Secure extends Controller {
+	private static final String ERIC_S_ID_ON_TWITTER = "16253692";
 	private static final String USER_ID_PROPERTY_NAME = "userId";
 
 	@Before(unless = { "login", "authenticate", "logout" })
@@ -29,12 +30,19 @@ public class Secure extends Controller {
 	}
 
 	private static void check(Check check) {
-		for (@SuppressWarnings("unused") String profile : check.value()) {
-			boolean hasProfile = true; // to be implemented
+		for (String profile : check.value()) {
+			boolean hasProfile = check(profile); // to be implemented
 			if (!hasProfile) {
-				// to be implemented
+				forbidden();
 			}
 		}
+	}
+
+	private static boolean check(String profile) {
+		if (profile.equalsIgnoreCase("admin")) {
+			return connected().idOnAuthSite.equals(ERIC_S_ID_ON_TWITTER);
+		}
+		return false;
 	}
 
 	public static void login() {
