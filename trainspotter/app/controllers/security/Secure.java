@@ -4,8 +4,7 @@ import static org.scribe.model.Verb.*;
 import static services.SupportedOAuthSites.*;
 import models.User;
 import org.scribe.model.*;
-import org.scribe.oauth.OAuthService;
-import play.data.validation.*;
+import play.data.validation.Required;
 import play.libs.Crypto;
 import play.mvc.*;
 import services.RegexUtils;
@@ -53,12 +52,11 @@ public class Secure extends Controller {
 
 		flash.keep("url");
 
-		OAuthService service = TWITTER.createService();
-		Token requestToken = service.getRequestToken();
+		Token requestToken = TWITTER.createService().getRequestToken();
 		User user = new User(TWITTER, null, null, requestToken);
 		user.save();
 
-		String requestUrl = service.getAuthorizationUrl(requestToken);
+		String requestUrl = TWITTER.createService().getAuthorizationUrl(requestToken);
 		Long userId = user.id;
 
 		render(requestUrl, userId);
@@ -67,11 +65,10 @@ public class Secure extends Controller {
 	public static void authenticate(@Required String verifierCode, @Required Long userId) {
 		@SuppressWarnings("static-access") User user = User.findById(userId);
 		Token requestToken = user.getToken();
-		OAuthService service = TWITTER.createService();
-		Token accessToken = service.getAccessToken(requestToken, new Verifier(verifierCode));
+		Token accessToken = TWITTER.createService().getAccessToken(requestToken, new Verifier(verifierCode));
 
 		OAuthRequest oauthRequest = new OAuthRequest(GET, "http://api.twitter.com/1/account/verify_credentials.xml");
-		service.signRequest(accessToken, oauthRequest);
+		TWITTER.createService().signRequest(accessToken, oauthRequest);
 		Response oauthResponse = oauthRequest.send();
 
 		String id = RegexUtils.extractFirstMatchInMultiLines("<id>(.*)</id>", oauthResponse.getBody());
@@ -83,13 +80,6 @@ public class Secure extends Controller {
 			saveUser(existingUser, accessToken, id, name);
 		} else {
 			saveUser(user, accessToken, id, name);
-		}
-
-		if (Validation.hasErrors()) {
-			flash.keep("url");
-			flash.error("secure.error");
-			params.flash();
-			login();
 		}
 
 		markUserAsConnected(user.id);
