@@ -66,7 +66,6 @@ public class Secure extends Controller {
 	}
 
 	public static void authenticate(@Required String verifierCode, @Required Long userId) {
-		Boolean allowed = false;
 		@SuppressWarnings("static-access") User user = User.findById(userId);
 		Token requestToken = user.getToken();
 		OAuthService service = TWITTER.createService();
@@ -78,32 +77,40 @@ public class Secure extends Controller {
 
 		String id = RegexUtils.extractFirstMatchInMultiLines("<id>(.*)</id>", oauthResponse.getBody());
 		String name = RegexUtils.extractFirstMatchInMultiLines("<name>(.*)</name>", oauthResponse.getBody());
-		user.idOnAuthSite = id;
-		user.name = name;
-		user.setToken(accessToken);
-		user.status = Status.AUTHENTICATED;
-		user.save();
+		@SuppressWarnings("static-access") User existingUser = User.find("byIdOnAuthSite", id).first();
 
-		allowed = true;
+		if (existingUser != null) {
+			user.delete();
+			saveUser(existingUser, accessToken, id, name);
+		} else {
+			saveUser(user, accessToken, id, name);
+		}
 
-		if (Validation.hasErrors() || !allowed) {
+		if (Validation.hasErrors()) {
 			flash.keep("url");
 			flash.error("secure.error");
 			params.flash();
 			login();
 		}
-		// Mark user as connected
 		saveUserId(user.id);
 		response.setCookie("rememberme", Crypto.sign("" + userId) + "-" + userId, "30d");
 		// Redirect to the original URL (or /)
 		redirectToOriginalURL();
 	}
 
+	private static void saveUser(User user, Token accessToken, String id, String name) {
+		user.idOnAuthSite = id;
+		user.name = name;
+		user.setToken(accessToken);
+		user.status = Status.AUTHENTICATED;
+		user.save();
+	}
+
 	public static void logout() {
 		session.clear();
 		response.removeCookie("rememberme");
 		flash.success("secure.logout");
-		login();
+		redirect("/");
 	}
 
 	static void redirectToOriginalURL() {
