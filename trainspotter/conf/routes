@@ -1,9 +1,9 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
-GET			/login			security.Secure.login
-POST        /login          security.Secure.authenticate
-GET         /logout         security.Secure.logout
+GET			/login			controllers.security.Secure.login
+POST        /login          controllers.security.Secure.authenticate
+GET         /logout         controllers.security.Secure.logout
 
 # Home page
 GET     /                                       Application.index

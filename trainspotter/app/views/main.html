@@ -14,8 +14,8 @@
         #{doLayout /}
         <hr/>
 
-		%{ user = controllers.security.Secure.Security.connected() }%
-		#{if user}
+		#{if controllers.security.Secure.Security.isConnected()}
+			%{ user = controllers.security.Secure.Security.connected() }%
 		    Bonjour, ${user.name}
 			<a href="/logout">Se déconnecter</a>
 		#{/if}

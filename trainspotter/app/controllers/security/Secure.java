@@ -12,6 +12,8 @@ import play.mvc.*;
 import services.RegexUtils;
 
 public class Secure extends Controller {
+	private static final String USER_ID_PROPERTY_NAME = "userId";
+
 	@Before(unless = { "login", "authenticate", "logout" })
 	static void checkAccess() {
 		if (!Security.isConnected()) {
@@ -43,8 +45,10 @@ public class Secure extends Controller {
 			String sign = remember.value.substring(0, remember.value.indexOf("-"));
 			String userId = remember.value.substring(remember.value.indexOf("-") + 1);
 			if (Crypto.sign(userId).equals(sign)) {
-				session.put("userId", userId);
-				redirectToOriginalURL();
+				saveUserId(Long.parseLong(userId));
+				if (Security.isConnected()) {
+					redirectToOriginalURL();
+				}
 			}
 		}
 		flash.keep("url");
@@ -70,7 +74,6 @@ public class Secure extends Controller {
 		OAuthRequest oauthRequest = new OAuthRequest(GET, "http://api.twitter.com/1/account/verify_credentials.xml");
 		service.signRequest(accessToken, oauthRequest);
 		Response oauthResponse = oauthRequest.send();
-		System.out.println(oauthResponse.getBody());
 
 		String id = RegexUtils.extractFirstMatchInMultiLines("<id>(.*)</id>", oauthResponse.getBody());
 		String name = RegexUtils.extractFirstMatchInMultiLines("<name>(.*)</name>", oauthResponse.getBody());
@@ -89,7 +92,7 @@ public class Secure extends Controller {
 			login();
 		}
 		// Mark user as connected
-		session.put("userId", user.id);
+		saveUserId(user.id);
 		response.setCookie("rememberme", Crypto.sign("" + userId) + "-" + userId, "30d");
 		// Redirect to the original URL (or /)
 		redirectToOriginalURL();
@@ -110,8 +113,15 @@ public class Secure extends Controller {
 		redirect(url);
 	}
 
-	public static class Security extends Controller {
+	static String getUserId() {
+		return session.get(USER_ID_PROPERTY_NAME);
+	}
 
+	private static void saveUserId(Long userId) {
+		session.put(USER_ID_PROPERTY_NAME, userId);
+	}
+
+	public static class Security extends Controller {
 		/**
 		 * This method checks that a profile is allowed to view this
 		 * page/method. This method is called prior to the method's controller
@@ -126,16 +136,18 @@ public class Secure extends Controller {
 
 		@SuppressWarnings("static-access")
 		static User connected() {
-			String userId = session.get("userId");
+			String userId = getUserId();
 			if (userId == null) {
 				return null;
 			}
+			long userIdAsLong;
 			try {
-				Long.parseLong(userId);
+				userIdAsLong = Long.parseLong(userId);
 			} catch (Throwable e) {
+				e.printStackTrace();
 				return null;
 			}
-			return User.findById(Long.parseLong(userId));
+			return User.findById(userIdAsLong);
 		}
 
 		/**
