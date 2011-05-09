@@ -45,7 +45,7 @@ public class Secure extends Controller {
 			String sign = remember.value.substring(0, remember.value.indexOf("-"));
 			String userId = remember.value.substring(remember.value.indexOf("-") + 1);
 			if (Crypto.sign(userId).equals(sign)) {
-				saveUserId(Long.parseLong(userId));
+				markUserAsConnected(Long.parseLong(userId));
 				if (isConnected()) {
 					redirectToOriginalURL();
 				}
@@ -92,7 +92,8 @@ public class Secure extends Controller {
 			params.flash();
 			login();
 		}
-		saveUserId(user.id);
+
+		markUserAsConnected(user.id);
 		response.setCookie("rememberme", Crypto.sign("" + userId) + "-" + userId, "30d");
 		// Redirect to the original URL (or /)
 		redirectToOriginalURL();
@@ -121,25 +122,21 @@ public class Secure extends Controller {
 		redirect(url);
 	}
 
-	static String getUserId() {
+	static String getConnectedUserId() {
 		return session.get(USER_ID_PROPERTY_NAME);
 	}
 
-	private static void saveUserId(Long userId) {
+	private static void markUserAsConnected(Long userId) {
 		session.put(USER_ID_PROPERTY_NAME, userId);
 	}
 
 	@SuppressWarnings("static-access")
 	public static User connected() {
-		String userId = getUserId();
-		if (userId == null) {
-			return null;
-		}
+		String userId = getConnectedUserId();
 		long userIdAsLong;
 		try {
 			userIdAsLong = Long.parseLong(userId);
 		} catch (Throwable e) {
-			e.printStackTrace();
 			return null;
 		}
 		return User.findById(userIdAsLong);
