@@ -65,7 +65,15 @@ public class Secure extends Controller {
 	public static void authenticate(@Required String verifierCode, @Required Long userId) {
 		@SuppressWarnings("static-access") User user = User.findById(userId);
 		Token requestToken = user.getToken();
-		Token accessToken = TWITTER.createService().getAccessToken(requestToken, new Verifier(verifierCode));
+		Token accessToken;
+		try {
+			accessToken = TWITTER.createService().getAccessToken(requestToken, new Verifier(verifierCode));
+		} catch (IllegalArgumentException e) {
+			// security code was probably wrong
+			flash.error("Echec à l'authorisation. Merci d'essayer à nouveau.");
+			login();
+			return;
+		}
 
 		OAuthRequest oauthRequest = new OAuthRequest(GET, "http://api.twitter.com/1/account/verify_credentials.xml");
 		TWITTER.createService().signRequest(accessToken, oauthRequest);
@@ -84,7 +92,6 @@ public class Secure extends Controller {
 
 		markUserAsConnected(user.id);
 		response.setCookie("rememberme", Crypto.sign("" + userId) + "-" + userId, "30d");
-		// Redirect to the original URL (or /)
 		redirectToOriginalURL();
 	}
 
