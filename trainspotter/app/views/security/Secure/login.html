@@ -1,15 +1,13 @@
 #{extends 'security/Secure/layout.html' /}
 
 <div id="login">
-	
+
 	<h1>Merci d'entrer le code de vérification</h1>
-	
+
 	URL: ${requestUrl}
-	<p>
-	User id: ${userId}
-		
+
 	#{form @authenticate()}
-		
+
 		#{if flash.error}
 			<p class="error">
 				&{flash.error}
