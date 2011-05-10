@@ -11,13 +11,15 @@ public class User extends Model {
 	public String idOnAuthSite;
 	public SupportedOAuthSites oAuthSite;
 	public String name;
-	String tokenValue;
-	String tokenSecret;
+	public String tokenValue;
+	public String tokenSecret;
+	public String email;
 
-	public User(SupportedOAuthSites oAuthSite, String idOnAuthSite, String name, Token token) {
+	public User(SupportedOAuthSites oAuthSite, String idOnAuthSite, String name, Token token, String email) {
 		this.oAuthSite = oAuthSite;
 		this.idOnAuthSite = idOnAuthSite;
 		this.name = name;
+		this.email = email;
 		setToken(token);
 	}
 

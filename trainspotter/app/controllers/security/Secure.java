@@ -61,7 +61,7 @@ public class Secure extends Controller {
 		flash.keep("url");
 
 		Token requestToken = TWITTER.createService().getRequestToken();
-		User user = new User(TWITTER, null, null, requestToken);
+		User user = new User(TWITTER, null, null, requestToken, null);
 		user.save();
 
 		String requestUrl = TWITTER.createService().getAuthorizationUrl(requestToken);
