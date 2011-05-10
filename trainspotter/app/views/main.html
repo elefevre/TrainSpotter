@@ -11,16 +11,27 @@
         #{get 'moreScripts' /}
     </head>
     <body>
+		#{if flash.error}
+		    <p style="color:#c00">
+		        ${flash.error}
+		    </p>
+		#{/if}
+		#{if flash.success}
+		    <p style="color:#00c">
+		        ${flash.success}
+		    </p>
+		#{/if}
+
         #{doLayout /}
         <hr/>
 
 		#{if controllers.security.Secure.isConnected()}
 			%{ user = controllers.security.Secure.connected() }%
 		    ${user.name}
-			<a href="/logout">Se déconnecter</a>
+			<a href="/logout">Me déconnecter</a>&nbsp;|&nbsp;<a href="@{Profile.edit()}">Mon profil</a>
 		#{/if}
 		#{else}
-			<a href="/login">Se connecter</a>
+			<a href="/login">Me connecter</a>
 		#{/else}
 		<hr/>
 		<a href="@{Application.index()}">Retour à l'accueil</a>
