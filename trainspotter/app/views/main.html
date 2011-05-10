@@ -16,7 +16,7 @@
 
 		#{if controllers.security.Secure.isConnected()}
 			%{ user = controllers.security.Secure.connected() }%
-		    Bonjour, ${user.name}
+		    ${user.name}
 			<a href="/logout">Se déconnecter</a>
 		#{/if}
 		#{else}
