@@ -31,7 +31,7 @@ public class Secure extends Controller {
 
 	private static void check(Check check) {
 		for (String profile : check.value()) {
-			boolean hasProfile = check(profile); // to be implemented
+			boolean hasProfile = check(profile);
 			if (!hasProfile) {
 				forbidden();
 			}
@@ -142,7 +142,8 @@ public class Secure extends Controller {
 		} catch (Throwable e) {
 			return null;
 		}
-		return User.findById(userIdAsLong);
+
+		return User.<User> findById(userIdAsLong);
 	}
 
 	public static boolean isConnected() {
