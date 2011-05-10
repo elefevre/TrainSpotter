@@ -4,6 +4,7 @@ import static org.mockito.Mockito.*;
 import models.*;
 import org.joda.time.*;
 import org.junit.Test;
+import org.scribe.model.Token;
 import play.test.UnitTest;
 import services.*;
 import com.google.inject.internal.Lists;
@@ -13,10 +14,10 @@ public class CheckTrainStatusServiceTest extends UnitTest {
 	private final TimeManager mockTimeManager = mock(TimeManager.class);
 	private final StatusPageRetriever mockStatusPageRetriever = mock(StatusPageRetriever.class);
 	private final TrainStatusNotifier mockTrainStatusNotifier = mock(TrainStatusNotifier.class);
-	private final User mockUser = mock(User.class);
+	private final User mockUser = new User(null, null, null, new Token(null, null), "user@site.com");
 
 	@Test
-	public void shouldCheckStatusOfTrain() throws Exception {
+	public void shouldSendAnEmailWhenCheckingStatusOfTrain() throws Exception {
 		TrainInformationPage mockRecentTrainInformationPageFor7000 = mock(TrainInformationPage.class);
 		TrainInformationPage mockRecentTrainInformationPageFor8000 = mock(TrainInformationPage.class);
 		when(mockTrainInformationPageDao.findAll()).thenReturn(Lists.<TrainInformationPage> newArrayList(//
@@ -28,8 +29,8 @@ public class CheckTrainStatusServiceTest extends UnitTest {
 
 		new CheckTrainStatusService(mockTrainInformationPageDao, mockStatusPageRetriever, mockTrainStatusNotifier, mockTimeManager).doJob();
 
-		verify(mockTrainStatusNotifier).notify("ericlef@gmail.com", "7000", mockRecentTrainInformationPageFor7000);
-		verify(mockTrainStatusNotifier).notify("ericlef@gmail.com", "8000", mockRecentTrainInformationPageFor8000);
+		verify(mockTrainStatusNotifier).notify("user@site.com", "7000", mockRecentTrainInformationPageFor7000);
+		verify(mockTrainStatusNotifier).notify("user@site.com", "8000", mockRecentTrainInformationPageFor8000);
 	}
 
 }

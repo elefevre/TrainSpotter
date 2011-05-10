@@ -25,7 +25,7 @@ public class CheckTrainStatusService {
 
 		for (TrainInformationPage page : trainInformationPageDao.findAll()) {
 			TrainInformationPage recentPage = statusPageRetriever.downloadStatusPageForTrain(page.trainNumber, year, month, day, page.user);
-			trainStatusNotifier.notify("ericlef@gmail.com", page.trainNumber, recentPage);
+			trainStatusNotifier.notify(page.user.email, page.trainNumber, recentPage);
 		}
 	}
 }
