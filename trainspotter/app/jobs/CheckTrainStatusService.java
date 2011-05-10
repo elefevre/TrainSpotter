@@ -24,7 +24,7 @@ public class CheckTrainStatusService {
 		int day = currentTime.getDayOfMonth();
 
 		for (TrainInformationPage page : trainInformationPageDao.findAll()) {
-			TrainInformationPage recentPage = statusPageRetriever.downloadStatusPageForTrain(page.trainNumber, year, month, day);
+			TrainInformationPage recentPage = statusPageRetriever.downloadStatusPageForTrain(page.trainNumber, year, month, day, page.user);
 			trainStatusNotifier.notify("ericlef@gmail.com", page.trainNumber, recentPage);
 		}
 	}

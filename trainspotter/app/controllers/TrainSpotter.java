@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 import play.data.validation.Required;
 import play.mvc.Controller;
 import services.*;
+import controllers.security.Secure;
 
 public class TrainSpotter extends Controller {
 	@Inject
@@ -18,7 +19,7 @@ public class TrainSpotter extends Controller {
 		checkTrainNumber();
 
 		DateTime today = new DateTime();
-		TrainInformationPage results = statusPageRetriever.downloadStatusPageForTrain(trainNumber, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth());
+		TrainInformationPage results = statusPageRetriever.downloadStatusPageForTrain(trainNumber, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth(), Secure.connected());
 
 		render(results);
 	}
@@ -26,10 +27,10 @@ public class TrainSpotter extends Controller {
 	public static void trackTrain(@Required String trainNumber) throws Exception {
 		checkTrainNumber();
 
-		trainTracker.addTrain(trainNumber);
+		trainTracker.addTrain(trainNumber, Secure.connected());
 
 		DateTime today = new DateTime();
-		TrainInformationPage results = statusPageRetriever.downloadStatusPageForTrain(trainNumber, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth());
+		TrainInformationPage results = statusPageRetriever.downloadStatusPageForTrain(trainNumber, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth(), Secure.connected());
 
 		render(results);
 	}

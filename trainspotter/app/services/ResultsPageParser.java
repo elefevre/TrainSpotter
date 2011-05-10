@@ -10,8 +10,8 @@ import com.google.common.collect.*;
 
 public class ResultsPageParser {
 
-	public TrainInformationPage toTrainInformationPage(String content) {
-		return new TrainInformationPage(getTrainNumber(content), getDepartureDate(content), getStationDetails(content));
+	public TrainInformationPage toTrainInformationPage(String content, User user) {
+		return new TrainInformationPage(getTrainNumber(content), getDepartureDate(content), getStationDetails(content), user);
 	}
 
 	private String getTrainNumber(String content) {

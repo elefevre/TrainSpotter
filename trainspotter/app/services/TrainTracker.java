@@ -2,7 +2,7 @@ package services;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import models.TrainInformationPage;
+import models.*;
 import org.joda.time.DateTime;
 
 public class TrainTracker {
@@ -16,13 +16,13 @@ public class TrainTracker {
 		this.timeManager = timeManager;
 	}
 
-	public void addTrain(String trainNumber) throws MalformedURLException, IOException {
+	public void addTrain(String trainNumber, User user) throws MalformedURLException, IOException {
 		DateTime currentTime = timeManager.getCurrentTime();
 		int year = currentTime.getYear();
 		int month = currentTime.getMonthOfYear();
 		int day = currentTime.getDayOfMonth();
 
-		TrainInformationPage page = statusPageRetriever.downloadStatusPageForTrain(trainNumber, year, month, day);
+		TrainInformationPage page = statusPageRetriever.downloadStatusPageForTrain(trainNumber, year, month, day, user);
 
 		trainInformationPageDao.save(page);
 	}

@@ -1,12 +1,14 @@
 package services;
+
+import static org.mockito.Mockito.*;
 import models.*;
 import org.fest.assertions.Assertions;
 import org.junit.Test;
-
 import play.test.UnitTest;
-import services.ResultsPageParser;
 
 public class ResultsPageParserTest extends UnitTest {
+	private final User mockUser = mock(User.class);
+
 	// <!-- saved from url=(0080)http://www.infolignes.com/recherche.php?date_num_train=2011|04|20&num_train=7015 -->
 	private static final String sample_08_04_2011 = "\n"
 			+ "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\"> \n"
@@ -234,17 +236,17 @@ public class ResultsPageParserTest extends UnitTest {
 
 	@Test
 	public void shouldReadTheTrainNumber() {
-		Assertions.assertThat(new ResultsPageParser().toTrainInformationPage(sample_08_04_2011).trainNumber).isEqualTo("7015");
+		Assertions.assertThat(new ResultsPageParser().toTrainInformationPage(sample_08_04_2011, mockUser).trainNumber).isEqualTo("7015");
 	}
 
 	@Test
 	public void shouldReadTheDepartureDate() {
-		Assertions.assertThat(new ResultsPageParser().toTrainInformationPage(sample_08_04_2011).theoreticalDepartureDay).isEqualTo("20/04/2011");
+		Assertions.assertThat(new ResultsPageParser().toTrainInformationPage(sample_08_04_2011, mockUser).theoreticalDepartureDay).isEqualTo("20/04/2011");
 	}
 
 	@Test
 	public void shouldReadStatusAtEachTrainStation() {
-		Assertions.assertThat(new ResultsPageParser().toTrainInformationPage(sample_08_04_2011).trainStationStatus).containsSequence(//
+		Assertions.assertThat(new ResultsPageParser().toTrainInformationPage(sample_08_04_2011, mockUser).trainStationStatus).containsSequence(//
 				new TrainStationStatus("Paris-Nord", "dep. 08h28", "A l'heure"),//
 				new TrainStationStatus("Lille Flandres", "arr. 09h30", "A l'heure"));
 	}
