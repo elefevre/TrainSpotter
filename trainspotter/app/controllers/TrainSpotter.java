@@ -15,10 +15,7 @@ public class TrainSpotter extends Controller {
 	private static TrainTracker trainTracker;
 
 	public static void displayTrainDetails(@Required String trainNumber) throws Exception {
-		if (hasErrors()) {
-			flash.error("Please enter the train number");
-			Application.index();
-		}
+		checkTrainNumber();
 
 		DateTime today = new DateTime();
 		TrainInformationPage results = statusPageRetriever.downloadStatusPageForTrain(trainNumber, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth());
@@ -27,10 +24,7 @@ public class TrainSpotter extends Controller {
 	}
 
 	public static void trackTrain(@Required String trainNumber) throws Exception {
-		if (hasErrors()) {
-			flash.error("Please enter the train number");
-			Application.index();
-		}
+		checkTrainNumber();
 
 		trainTracker.addTrain(trainNumber);
 
@@ -38,6 +32,13 @@ public class TrainSpotter extends Controller {
 		TrainInformationPage results = statusPageRetriever.downloadStatusPageForTrain(trainNumber, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth());
 
 		render(results);
+	}
+
+	private static void checkTrainNumber() {
+		if (hasErrors()) {
+			flash.error("Merci de fournir un numéro de train");
+			Application.index();
+		}
 	}
 
 }
