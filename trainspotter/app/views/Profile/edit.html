@@ -1,0 +1,10 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+<h1>Modification de mon profil</h1>
+%{ user = controllers.security.Secure.connected() }%
+
+<form action="@{Profile.edit()}" method="GET">
+	D'après ${user.oAuthSite}, je m'appelle ${user.name}.
+	Mon adresse email est <input type="text" name="emailAddress" value="${user.email}" />.
+</form>
