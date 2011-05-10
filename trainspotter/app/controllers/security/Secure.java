@@ -1,5 +1,6 @@
 package controllers.security;
 
+import static controllers.helper.Redirects.*;
 import static org.scribe.model.Verb.*;
 import static services.SupportedOAuthSites.*;
 import models.User;
@@ -16,7 +17,9 @@ public class Secure extends Controller {
 	@Before(unless = { "login", "authenticate", "logout" })
 	static void checkAccess() {
 		if (!isConnected()) {
-			flash.put("url", "GET".equals(request.method) ? request.url : "/"); // seems a good default
+			if ("GET".equals(request.method)) {
+				flash.put("url", request.url);
+			}
 			login();
 		}
 		Check check = getActionAnnotation(Check.class);
@@ -114,15 +117,15 @@ public class Secure extends Controller {
 		session.clear();
 		response.removeCookie("rememberme");
 		flash.success("secure.logout");
-		redirect("/");
+		redirectToHomePage();
 	}
 
 	static void redirectToOriginalURL() {
 		String url = flash.get("url");
-		if (url == null) {
-			url = "/";
+		if (url != null) {
+			redirect(url);
 		}
-		redirect(url);
+		redirectToHomePage();
 	}
 
 	static String getConnectedUserId() {
