@@ -3,6 +3,7 @@ package services;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
+import play.Logger;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.ListVerifiedEmailAddressesResult;
 import com.google.common.base.Throwables;
@@ -43,11 +44,17 @@ public class EmailSender {
 			t.connect();
 			t.sendMessage(msg, null);
 			t.close();
+			Logger.debug("Successfully sent an email '{1}' to {2}", title, to);
 		} catch (AddressException e) {
-			Throwables.propagate(e);
+			logAndRethrow(to, title, e);
 		} catch (MessagingException e) {
-			Throwables.propagate(e);
+			logAndRethrow(to, title, e);
 		}
+	}
+
+	private void logAndRethrow(String to, String title, Exception e) {
+		Logger.error(e, "email '{1}' to {2}", title, to);
+		Throwables.propagate(e);
 	}
 
 	private static Session createMailSession(String accessKey, String secretKey) {
