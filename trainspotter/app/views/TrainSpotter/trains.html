@@ -11,7 +11,7 @@
 		</thead>
 		#{list items:results, as:'train'}
 			<tr>
-				<td>${train.trainNumber}</td>
+				<td><a href="@{TrainSpotter.displayTrainDetails(train.trainNumber)}">${train.trainNumber}</a></td>
 				<td>${train.theoreticalDepartureDay}</td>
 			</tr>
 		#{/list}
