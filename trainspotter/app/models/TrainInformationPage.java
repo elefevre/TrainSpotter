@@ -11,6 +11,7 @@ public class TrainInformationPage extends Model {
 	public String theoreticalDepartureDay;
 	@OneToMany(cascade = CascadeType.ALL)
 	public List<TrainStationStatus> trainStationStatus;
+	@OneToOne
 	public User user;
 
 	public TrainInformationPage(String trainNumber, String theoreticalDepartureDay, List<TrainStationStatus> trainStationStatus, User user) {

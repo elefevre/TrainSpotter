@@ -1,6 +1,7 @@
 package controllers;
 
 import static play.data.validation.Validation.*;
+import java.util.List;
 import javax.inject.Inject;
 import models.TrainInformationPage;
 import org.joda.time.DateTime;
@@ -31,6 +32,12 @@ public class TrainSpotter extends Controller {
 
 		DateTime today = new DateTime();
 		TrainInformationPage results = statusPageRetriever.downloadStatusPageForTrain(trainNumber, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth(), Secure.connected());
+
+		render(results);
+	}
+
+	public static void trains() {
+		@SuppressWarnings("static-access") List<TrainInformationPage> results = TrainInformationPage.find("byUser", Secure.connected()).fetch();
 
 		render(results);
 	}

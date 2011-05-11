@@ -1,0 +1,22 @@
+#{extends 'main.html' /}
+#{set title:'Home' /}
+
+<h1>Tous mes trains</h1>
+
+#{list items:results}
+	<table>
+		<thead>
+			<td>Numéro</td>
+			<td>Départ init. prévu</td>
+		</thead>
+		#{list items:results, as:'train'}
+			<tr>
+				<td>${train.trainNumber}</td>
+				<td>${train.theoreticalDepartureDay}</td>
+			</tr>
+		#{/list}
+	</table>
+#{/list}
+#{else}
+	Je n'ai pas encore de trains dans ma liste d'alertes.
+#{/else}
