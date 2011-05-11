@@ -23,12 +23,18 @@
 		#{/if}
 
         #{doLayout /}
+
+        <hr/>
+		<form action="@{TrainSpotter.displayTrainDetails()}" method="GET">
+			<input type="text" name="trainNumber" value="7015" />
+			<input type="submit" value="Que fait ce train ?" />
+		</form>
         <hr/>
 
 		#{if controllers.security.Secure.isConnected()}
 			%{ user = controllers.security.Secure.connected() }%
 		    ${user.name}
-			<a href="/logout">Me déconnecter</a>&nbsp;|&nbsp;<a href="@{Profile.edit()}">Mon profil</a>
+			<a href="/logout">Me déconnecter</a>&nbsp;|&nbsp;<a href="@{Profile.edit()}">Mon profil</a>&nbsp;|&nbsp;<a href="@{TrainSpotter.trains()}">Mes trains</a>
 		#{/if}
 		#{else}
 			<a href="/login">Me connecter</a>
