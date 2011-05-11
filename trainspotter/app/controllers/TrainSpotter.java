@@ -21,8 +21,10 @@ public class TrainSpotter extends Controller {
 
 		DateTime today = new DateTime();
 		TrainInformationPage results = statusPageRetriever.downloadStatusPageForTrain(trainNumber, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth(), Secure.connected());
+		@SuppressWarnings("static-access") TrainInformationPage pageForUser = TrainInformationPage.find("byTrainNumberAndUser", trainNumber, Secure.connected()).first();
+		boolean alreadyTracked = pageForUser != null;
 
-		render(results);
+		render(results, alreadyTracked);
 	}
 
 	public static void trackTrain(@Required String trainNumber) throws Exception {
@@ -30,10 +32,20 @@ public class TrainSpotter extends Controller {
 
 		trainTracker.addTrain(trainNumber, Secure.connected());
 
-		DateTime today = new DateTime();
-		TrainInformationPage results = statusPageRetriever.downloadStatusPageForTrain(trainNumber, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth(), Secure.connected());
+		displayTrainDetails(trainNumber);
+	}
 
-		render(results);
+	public static void unTrackTrain(@Required String trainNumber) throws Exception {
+		checkTrainNumber();
+
+		trainTracker.addTrain(trainNumber, Secure.connected());
+		@SuppressWarnings("static-access") TrainInformationPage pageForUser = TrainInformationPage.find("byTrainNumberAndUser", trainNumber, Secure.connected()).first();
+		System.out.println("pageForUser= " + pageForUser);
+		pageForUser.delete();
+		pageForUser = TrainInformationPage.find("byTrainNumberAndUser", trainNumber, Secure.connected()).first();
+		System.out.println("pageForUser= " + pageForUser);
+
+		displayTrainDetails(trainNumber);
 	}
 
 	public static void trains() {

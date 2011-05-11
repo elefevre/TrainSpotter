@@ -5,7 +5,12 @@
 
 <h2>La date de départ initiale est: ${results.theoreticalDepartureDay}</h1>
 
-<a href="@{TrainSpotter.trackTrain()}?trainNumber=${results.trainNumber}">Suivre les retards de ce train</a>
+#{if alreadyTracked}
+	<a href="@{TrainSpotter.unTrackTrain()}?trainNumber=${results.trainNumber}">Ne plus suivre les retards de ce train</a>
+#{/if}
+#{else}
+	<a href="@{TrainSpotter.trackTrain()}?trainNumber=${results.trainNumber}">Suivre les retards de ce train</a>
+#{/else}
 
 <table>
 	<thead>
@@ -21,5 +26,3 @@
 		</tr>
 	#{/list}
 </table>
-
-<a href="@{TrainSpotter.trackTrain()}?trainNumber=${results.trainNumber}">Suivre les retards de ce train</a>
