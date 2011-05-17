@@ -35,15 +35,13 @@ public class TrainSpotter extends Controller {
 		displayTrainDetails(trainNumber);
 	}
 
+	@SuppressWarnings("static-access")
 	public static void unTrackTrain(@Required String trainNumber) throws Exception {
 		checkTrainNumber();
 
-		trainTracker.addTrain(trainNumber, Secure.connected());
-		@SuppressWarnings("static-access") TrainInformationPage pageForUser = TrainInformationPage.find("byTrainNumberAndUser", trainNumber, Secure.connected()).first();
-		System.out.println("pageForUser= " + pageForUser);
+		TrainInformationPage pageForUser = TrainInformationPage.find("byTrainNumberAndUser", trainNumber, Secure.connected()).first();
 		pageForUser.delete();
 		pageForUser = TrainInformationPage.find("byTrainNumberAndUser", trainNumber, Secure.connected()).first();
-		System.out.println("pageForUser= " + pageForUser);
 
 		displayTrainDetails(trainNumber);
 	}
