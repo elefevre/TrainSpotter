@@ -33,4 +33,14 @@ public class TrainInformationPageDao {
 	public List<TrainInformationPage> findByUser(User user) {
 		return TrainInformationPage.find("byUser", user).fetch();
 	}
+
+	public void delete(User user, String trainNumber) {
+		TrainInformationPage pageForUser = findByTrainNumberAndUser(user, trainNumber);
+		pageForUser.delete();
+	}
+
+	@SuppressWarnings("static-access")
+	public TrainInformationPage findByTrainNumberAndUser(User user, String trainNumber) {
+		return TrainInformationPage.find("byTrainNumberAndUser", trainNumber, user).first();
+	}
 }

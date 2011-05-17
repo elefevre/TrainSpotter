@@ -23,7 +23,7 @@ public class TrainSpotter extends Controller {
 
 		DateTime today = new DateTime();
 		TrainInformationPage results = statusPageRetriever.downloadStatusPageForTrain(trainNumber, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth(), Secure.connected());
-		@SuppressWarnings("static-access") TrainInformationPage pageForUser = TrainInformationPage.find("byTrainNumberAndUser", trainNumber, Secure.connected()).first();
+		TrainInformationPage pageForUser = trainInformationPageDao.findByTrainNumberAndUser(Secure.connected(), trainNumber);
 		boolean alreadyTracked = pageForUser != null;
 
 		render(results, alreadyTracked);
@@ -37,12 +37,10 @@ public class TrainSpotter extends Controller {
 		displayTrainDetails(trainNumber);
 	}
 
-	@SuppressWarnings("static-access")
 	public static void unTrackTrain(@Required String trainNumber) throws Exception {
 		checkTrainNumber();
 
-		TrainInformationPage pageForUser = TrainInformationPage.find("byTrainNumberAndUser", trainNumber, Secure.connected()).first();
-		pageForUser.delete();
+		trainInformationPageDao.delete(Secure.connected(), trainNumber);
 
 		displayTrainDetails(trainNumber);
 	}
