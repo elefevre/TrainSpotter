@@ -15,6 +15,8 @@ public class TrainSpotter extends Controller {
 	private static StatusPageRetriever statusPageRetriever;
 	@Inject
 	private static TrainTracker trainTracker;
+	@Inject
+	private static TrainInformationPageDao trainInformationPageDao;
 
 	public static void displayTrainDetails(@Required String trainNumber) throws Exception {
 		checkTrainNumber();
@@ -41,13 +43,12 @@ public class TrainSpotter extends Controller {
 
 		TrainInformationPage pageForUser = TrainInformationPage.find("byTrainNumberAndUser", trainNumber, Secure.connected()).first();
 		pageForUser.delete();
-		pageForUser = TrainInformationPage.find("byTrainNumberAndUser", trainNumber, Secure.connected()).first();
 
 		displayTrainDetails(trainNumber);
 	}
 
 	public static void trains() {
-		@SuppressWarnings("static-access") List<TrainInformationPage> results = TrainInformationPage.find("byUser", Secure.connected()).fetch();
+		List<TrainInformationPage> results = trainInformationPageDao.findByUser(Secure.connected());
 
 		render(results);
 	}

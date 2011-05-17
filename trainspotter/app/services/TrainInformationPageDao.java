@@ -2,7 +2,7 @@ package services;
 
 import java.util.List;
 import javax.persistence.criteria.*;
-import models.TrainInformationPage;
+import models.*;
 import play.db.jpa.JPA;
 
 public class TrainInformationPageDao {
@@ -27,5 +27,10 @@ public class TrainInformationPageDao {
 		query.select(from);
 
 		return JPA.em().createQuery(query).getResultList();
+	}
+
+	@SuppressWarnings("static-access")
+	public List<TrainInformationPage> findByUser(User user) {
+		return TrainInformationPage.find("byUser", user).fetch();
 	}
 }
