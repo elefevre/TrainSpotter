@@ -4,7 +4,6 @@ import static play.data.validation.Validation.*;
 import java.util.List;
 import javax.inject.Inject;
 import models.TrainInformationPage;
-import org.joda.time.DateTime;
 import play.data.validation.Required;
 import play.mvc.Controller;
 import services.*;
@@ -21,8 +20,7 @@ public class TrainSpotter extends Controller {
 	public static void displayTrainDetails(@Required String trainNumber) throws Exception {
 		checkTrainNumber();
 
-		DateTime today = new DateTime();
-		TrainInformationPage results = statusPageRetriever.downloadStatusPageForTrain(trainNumber, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth(), Secure.connected());
+		TrainInformationPage results = statusPageRetriever.downloadStatusPageForTrain(trainNumber, Secure.connected());
 		TrainInformationPage pageForUser = trainInformationPageDao.findByTrainNumberAndUser(Secure.connected(), trainNumber);
 		boolean alreadyTracked = pageForUser != null;
 

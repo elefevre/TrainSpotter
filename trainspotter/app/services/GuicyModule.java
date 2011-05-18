@@ -10,8 +10,8 @@ public class GuicyModule extends AbstractModule {
 	}
 
 	@Provides
-	public StatusPageRetriever getStatusPageRetriever(URLConnectionProvider urlConnectionProvider, ResultsPageParser resultsPageParser) {
-		return new StatusPageRetriever(urlConnectionProvider, resultsPageParser);
+	public StatusPageRetriever getStatusPageRetriever(URLConnectionProvider urlConnectionProvider, ResultsPageParser resultsPageParser, TimeManager timeManager) {
+		return new StatusPageRetriever(urlConnectionProvider, resultsPageParser, timeManager);
 	}
 
 	@Provides
@@ -25,12 +25,12 @@ public class GuicyModule extends AbstractModule {
 	}
 
 	@Provides
-	public CheckTrainStatusService getCheckTrainStatus(TrainInformationPageDao trainInformationPageDao, StatusPageRetriever statusPageRetriever, TrainStatusNotifier trainStatusNotifier, TimeManager timeManager) {
-		return new CheckTrainStatusService(trainInformationPageDao, statusPageRetriever, trainStatusNotifier, timeManager);
+	public CheckTrainStatusService getCheckTrainStatus(TrainInformationPageDao trainInformationPageDao, StatusPageRetriever statusPageRetriever, TrainStatusNotifier trainStatusNotifier) {
+		return new CheckTrainStatusService(trainInformationPageDao, statusPageRetriever, trainStatusNotifier);
 	}
 
 	@Provides
-	public TrainTracker getTrainTracker(TrainInformationPageDao trainInformationPageDao, StatusPageRetriever statusPageRetriever, TimeManager timeManager) {
-		return new TrainTracker(trainInformationPageDao, statusPageRetriever, timeManager);
+	public TrainTracker getTrainTracker(TrainInformationPageDao trainInformationPageDao, StatusPageRetriever statusPageRetriever) {
+		return new TrainTracker(trainInformationPageDao, statusPageRetriever);
 	}
 }

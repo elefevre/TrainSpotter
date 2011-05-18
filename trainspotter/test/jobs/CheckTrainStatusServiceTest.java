@@ -23,11 +23,11 @@ public class CheckTrainStatusServiceTest extends UnitTest {
 		when(mockTrainInformationPageDao.findAll()).thenReturn(Lists.<TrainInformationPage> newArrayList(//
 				new TrainInformationPage("7000", "20/10/2011", Lists.<TrainStationStatus> newArrayList(), mockUser),//
 				new TrainInformationPage("8000", "22/10/2011", Lists.<TrainStationStatus> newArrayList(), mockUser)));
-		when(mockStatusPageRetriever.downloadStatusPageForTrain("7000", 2011, 1, 1, mockUser)).thenReturn(mockRecentTrainInformationPageFor7000);
-		when(mockStatusPageRetriever.downloadStatusPageForTrain("8000", 2011, 1, 1, mockUser)).thenReturn(mockRecentTrainInformationPageFor8000);
+		when(mockStatusPageRetriever.downloadStatusPageForTrain("7000", mockUser)).thenReturn(mockRecentTrainInformationPageFor7000);
+		when(mockStatusPageRetriever.downloadStatusPageForTrain("8000", mockUser)).thenReturn(mockRecentTrainInformationPageFor8000);
 		when(mockTimeManager.getCurrentTime()).thenReturn(new DateTime(2011, 01, 01, 2, 0, 0, 0, DateTimeZone.UTC));
 
-		new CheckTrainStatusService(mockTrainInformationPageDao, mockStatusPageRetriever, mockTrainStatusNotifier, mockTimeManager).doJob();
+		new CheckTrainStatusService(mockTrainInformationPageDao, mockStatusPageRetriever, mockTrainStatusNotifier).doJob();
 
 		verify(mockTrainStatusNotifier).notify("user@site.com", "7000", mockRecentTrainInformationPageFor7000);
 		verify(mockTrainStatusNotifier).notify("user@site.com", "8000", mockRecentTrainInformationPageFor8000);

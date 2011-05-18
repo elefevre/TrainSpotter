@@ -5,19 +5,23 @@ import java.net.MalformedURLException;
 import java.util.List;
 import models.*;
 import org.apache.commons.io.IOUtils;
+import org.joda.time.DateTime;
 import com.google.common.base.Joiner;
 
 public class StatusPageRetriever {
 	private final URLConnectionProvider urlConnectionProvider;
 	private final ResultsPageParser resultsPageParser;
+	private final TimeManager timeManager;
 
-	public StatusPageRetriever(URLConnectionProvider urlConnectionProvider, ResultsPageParser resultsPageParser) {
+	public StatusPageRetriever(URLConnectionProvider urlConnectionProvider, ResultsPageParser resultsPageParser, TimeManager timeManager) {
 		this.urlConnectionProvider = urlConnectionProvider;
 		this.resultsPageParser = resultsPageParser;
+		this.timeManager = timeManager;
 	}
 
-	public TrainInformationPage downloadStatusPageForTrain(String trainNumber, int year, int month, int day, User user) throws MalformedURLException, IOException {
-		BufferedReader inputStreamForUrl = urlConnectionProvider.getInputStreamForUrl(createUrl(trainNumber, year, month, day));
+	public TrainInformationPage downloadStatusPageForTrain(String trainNumber, User user) throws MalformedURLException, IOException {
+		DateTime dateTime = timeManager.getCurrentTime();
+		BufferedReader inputStreamForUrl = urlConnectionProvider.getInputStreamForUrl(createUrl(trainNumber, dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth()));
 
 		String results = toMultiLineString(inputStreamForUrl);
 
